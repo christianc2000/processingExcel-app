@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('answers', function (Blueprint $table) {
+        Schema::create('respuesta_definidas', function (Blueprint $table) {
             $table->id();
-            $table->string('value');
+            $table->text('respuesta');
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('answers');
+        Schema::dropIfExists('respuesta_definidas');
     }
 };

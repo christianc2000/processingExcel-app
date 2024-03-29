@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Answer extends Model
+class Respuesta extends Model
 {
     use HasFactory;
     protected $fillable=[
-        'value'
+        'valor'
     ];
 
-    public function questions(){
-        return $this->belongsToMany(Question::class)->withPivot('quantity')->withTimestamps();
+    public function preguntas(){
+        return $this->belongsToMany(Pregunta::class)->withPivot('cantidad')->withTimestamps();
     }
 }

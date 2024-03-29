@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class File extends Model
+class Dimension extends Model
 {
     use HasFactory;
     protected $fillable=[
-        'name',
-        'quantity_person'
+        'nombre'
     ];
 
-    public function questions(){
-        return $this->hasMany(Question::class);
+    public function preguntas(){
+        return $this->hasMany(Pregunta::class);
     }
 }

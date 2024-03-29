@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('respuestas', function (Blueprint $table) {
             $table->id();
-            $table->string('ask');
-            $table->foreignId('file_id')->references('id')->on('files')->onDelete('cascade');
+            $table->string('valor');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('respuestas');
     }
 };

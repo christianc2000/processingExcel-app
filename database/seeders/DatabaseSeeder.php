@@ -12,8 +12,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(FileSeeder::class);
-        $this->call(QuestionSeeder::class);
-        $this->call(AnswerSeeder::class);
+        $this->call(CuestionarioSeeder::class);
+        $this->call(DimensionSeeder::class);
+        $this->call(RespuestaDefinidaSeeder::class);
+        $this->call(PreguntaSeeder::class);
     }
 }
