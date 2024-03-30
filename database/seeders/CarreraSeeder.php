@@ -255,7 +255,7 @@ class CarreraSeeder extends Seeder
                 'updated_at'        => now()
             ],
             [
-                'nombre'            => 'Medicina Veterinaria y Zootécnica',
+                'nombre'            => 'Medicina Veterinaria y Zootecnia',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ],
