@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\ImportarArchivoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::resource('importar', ImportarArchivoController::class)->names('importar.archivo');
+Route::post('importar/archivo',[ImportarArchivoController::class,'importar'])->name('importar.archivo.importar');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+

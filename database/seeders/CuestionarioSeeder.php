@@ -14,6 +14,9 @@ class CuestionarioSeeder extends Seeder
     public function run(): void
     {
         Cuestionario::create([
+            'nombre' => 'Proceso de Autoevaluación al Mercosur Arcu-Sur 1'
+        ]);
+        Cuestionario::create([
             'nombre' => 'Proceso de Autoevaluación al Mercosur Arcu-Sur'
         ]);
     }

@@ -91,6 +91,10 @@ class DimensionSeeder extends Seeder
             ],
             [//26
                 'nombre'=>'35: DESEMPEÑO DOCENTE EN LA INVESTIGACIÓN Y LA INTERACCIÓN SOCIAL'
+            ],
+            //******************************OTRO CUESTIONARIO******************************************* */
+            [//27
+                'nombre'=>'DIMENSIÓN 1: CONTEXTO INSTITUCIONAL'
             ]
         ];
         foreach ($dimensions as $dimension) {

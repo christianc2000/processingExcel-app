@@ -482,8 +482,8 @@ class PreguntaSeeder extends Seeder
                 'respuesta_definida_id' => 15,
                 'dimension_id' => 17
             ],
-              //Dimension 25
-              [
+            //Dimension 25
+            [
                 'enunciado' => '43 ¿El contenido de las asignaturas que se imparten es relevante?',
                 'tipo' => 'U',
                 'cuestionario_id' => 1,
@@ -987,6 +987,189 @@ class PreguntaSeeder extends Seeder
                 'cuestionario_id' => 1,
                 'respuesta_definida_id' => 1,
                 'dimension_id' => 26
+            ],
+            // ****************************CUESTIONARIOI 2*******************************
+            [
+                'enunciado' => '1. ¿Conoce usted el estatuto orgánico vigente de la Universidad? (A.D.E.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '2.  En caso de que la respuesta sea SI   ¿Es actualizado y se aplica? (A.D.E.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '3. ¿Conoce los derechos y deberes del estamento estudiantil? (A.D.E)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '4. Conoce usted los reglamentos de: (A.D.E)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '5. Conoce usted los manuales de funcionamiento de: (A.D.E)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '6. ¿Conoce usted la Misión y la Visión de su carrera? (A.D.E.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '7. En caso que la respuesta sea SI ¿La Misión y Visión de la Carrera son actualizadas y responden a los requerimientos que tiene la región y el país? (A.D.E.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '8. Los objetivos y metas que pretende alcanzar la carrera están definidos en forma clara? (A.D.E.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '9. ¿Existen mecanismos de difusión para dar a conocer la Misión, Visión y Objetivos de la Carrera? (A.D.E.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '10. ¿La carrera cuenta con un sistema de información y comunicación accesible? A.D.E.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            //11
+            [
+                'enunciado' => '11. En caso que la respuesta sea SI ¿Qué sistema de información y comunicación utiliza la carrera? (A.D.E.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '12. ¿Conoce el Plan de Desarrollo Estratégico o Plan de Mejora de la Carrera? (A.D.E.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '13. ¿A participado en la elaboración del Plan de Desarrollo Estratégico o Plan de Mejoras de su carrera? (A.D.E.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '14. ¿Para verificar el cumplimiento del Plan de Desarrollo Estratégico de la Carrera, se cuenta con algún sistema de: (A, D) [Seguimiento y control]',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '14. ¿Para verificar el cumplimiento del Plan de Desarrollo Estratégico de la Carrera, se cuenta con algún sistema de: (A, D) [Evaluación ]',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '15. ¿Se cumplen los criterios y mecanismos de selección y admisión para elegir las autoridades de la Carrera, de acuerdo a los reglamentos vigentes? (A.D.E)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '16. En caso que la respuesta sea SI ¿Son adecuados estos mecanismos? (A.D.E.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '17. ¿Existen mecanismos de evaluación de las autoridades de la Carrera? (A.D.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '18. En caso que la respuesta sea SI ¿Son adecuados estos mecanismos? (A.D.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '19. ¿La actual estructura organizacional de la Universidad, facilita y estimula el desarrollo de las actividades académicas? (enseñanza-aprendizaje, investigación e interacción social) (A.D.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            //20
+            [
+                'enunciado' => '20. ¿Existen políticas para mejorar estructura organizacional de la Universidad? (A. D)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '21. ¿Conoce usted el organigrama de su facultad y de su carrera? (A.D.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '22. ¿Considera usted que los procedimientos administrativos responden a la estructura formal de la Institución? (A.D.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '22.1  En caso que la respuesta sea SI, NO ¿Cómo son estos procedimientos? (A.D.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '23.1. ¿Es adecuada la cantidad del personal administrativo?: CANTIDAD (A.D.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '23.2. ¿Es adecuado el nivel de preparación del personal administrativo? : CALIDAD (A.D.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '24. ¿Existen normativas de evaluación y seguimiento del personal administrativo? (A) ',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '25. ¿Existen mecanismos de evaluación continua y seguimiento de la gestión académica? (A) ',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '27. ¿Los estudiantes reciben una inducción adecuada referente a los procesos que desarrolla la carrera y la universidad?  (A.E.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
+            ],
+            [
+                'enunciado' => '19. ¿La actual estructura organizacional de la Universidad, facilita y estimula el desarrollo de las actividades académicas? (enseñanza-aprendizaje, investigación e interacción social) (A.D.)',
+                'tipo' => 'U',
+                'cuestionario_id' => 2,
+                'dimension_id' => 27
             ],
         ];
         foreach ($preguntas as $pregunta) {

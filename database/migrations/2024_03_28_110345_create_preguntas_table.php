@@ -16,7 +16,7 @@ return new class extends Migration
             $table->text('enunciado');
             $table->string('tipo', 1); //U=Unirespuesta, M=Multirespuesta
             $table->foreignId('cuestionario_id')->references('id')->on('cuestionarios')->onDelete('cascade');
-            $table->foreignId('respuesta_definida_id')->references('id')->on('respuesta_definidas')->onDelete('cascade');
+            $table->foreignId('respuesta_definida_id')->nullable()->references('id')->on('respuesta_definidas')->onDelete('cascade');
             $table->foreignId('dimension_id')->references('id')->on('dimensions')->onDelete('cascade');
             $table->timestamps();
         });
