@@ -6,41 +6,52 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CategoriaSeeder extends Seeder
+class LocalidadSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('categorias')->insert([
+        DB::table('localidades')->insert([
             [
-                'nombre'            => 'Autoridades',
+                'nombre'            => 'Santa Cruz de la Sierra',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ],
             [
-                'nombre'            => 'Docentes',
+                'nombre'            => 'Camiri',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ],
             [
-                'nombre'            => 'Empleadores',
+                'nombre'            => 'Montero',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ],
             [
-                'nombre'            => 'Estudiantes',
+                'nombre'            => 'San Ignacio de Velasco',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ],
             [
-                'nombre'            => 'Titulados',
+                'nombre'            => 'San Julián',
+                'created_at'        => now(),
+                'updated_at'        => now()
+            ],
+            [
+                'nombre'            => 'Vallegrande',
+                'created_at'        => now(),
+                'updated_at'        => now()
+            ],
+            [
+                'nombre'            => 'Yapacaní',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ]
 
 
         ]);
+
     }
 }

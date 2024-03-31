@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categoria extends Model
+class CarreraFacultad extends Model
 {
     use HasFactory;
 
-    public $table = "categorias";
+    public $table = "carreras_facultad";
+
 }
