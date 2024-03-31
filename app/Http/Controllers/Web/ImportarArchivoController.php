@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cuestionario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportarArchivoController extends Controller
@@ -13,9 +14,19 @@ class ImportarArchivoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($id)
     {
-        return view('procesamiento.importar');
+        $archivos = DB::table('archivos')
+                        ->join('categorias', 'archivos.categoria_id', '=', 'categorias.id')
+                        ->join('carreras_facultad', 'archivos.carrera_facultad_id', '=', 'carreras_facultad.id')
+                        ->join('facultades', 'carreras_facultad.facultad_id', '=', 'facultades.id')
+                        ->join('carreras', 'carreras_facultad.carrera_id', '=', 'carreras.id')
+                        ->join('localidades', 'facultades.localidad_id', '=', 'localidades.id')
+                        ->select('archivos.id as id', 'categorias.nombre as categoria', 'facultades.nombre as facultad', 'carreras.nombre as carrera', 'localidades.nombre as localidad', 'archivos.nombre as nombre')
+                        ->where('archivos.id', '=',$id)
+                        ->get();
+
+        return view('procesamiento.importar', compact('archivos'));
     }
 
     /**

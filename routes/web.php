@@ -19,7 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::resource('importar', ImportarArchivoController::class)->names('importar.archivo');
+//Route::resource('importar', ImportarArchivoController::class)->names('importar.archivo');
+
+Route::get('importar/{id}', [App\Http\Controllers\Web\ImportarArchivoController::class,'index'])->name('importar.archivo');
+
 Route::post('importar/archivo',[ImportarArchivoController::class,'importar'])->name('importar.archivo.importar');
 Auth::routes();
 

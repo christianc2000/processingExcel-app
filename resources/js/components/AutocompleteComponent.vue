@@ -78,7 +78,7 @@ export default {
                 .then(response=>{
                     const id = response.data.id;
                     console.log(response.data);
-                    window.location.href = "http://127.0.0.1:8000/resultados/"+ id;
+                    window.location.href = "http://127.0.0.1:8000/importar/"+ id;
 
                 })
                 .catch(error => {});
