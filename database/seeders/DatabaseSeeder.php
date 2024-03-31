@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FacultadSeeder::class);
         $this->call(CarreraSeeder::class);
         $this->call(CarrerasFacultadSeeder::class);
+        $this->call(CategoriaSeeder::class);
     }
 }

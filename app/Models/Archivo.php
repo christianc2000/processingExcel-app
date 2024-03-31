@@ -10,8 +10,8 @@ class Archivo extends Model
     use HasFactory;
     protected $fillable=[
         'nombre',
-        'cantidad_encuestados',
-        'fecha_archivo',
+        'categoria_id',
+        'carrera_facultad_id',
         'cuestionario_id'
     ];
 

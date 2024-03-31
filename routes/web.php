@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\CarreraFacultad;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +22,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/procesamiento', [App\Http\Controllers\CarreraFacultadController::class, 'index'])->name('procesamiento');
+Route::post('/procesamiento', [App\Http\Controllers\CarreraFacultadController::class, 'index'])->name('procesamiento');
+
+Route::get('/livesearch', [App\Http\Controllers\CarreraFacultadController::class, 'getCarreras']);
+
+Route::post('/datos', [App\Http\Controllers\CarreraFacultadController::class, 'mostrarDatosCarrera'])->name('datos');
+Route::get('/datos', [App\Http\Controllers\CarreraFacultadController::class, 'mostrarDatosCarrera'])->name('datos');
+Route::get('/resultados/{id}', [App\Http\Controllers\CarreraFacultadController::class, 'resultados'])->name('resultados');
