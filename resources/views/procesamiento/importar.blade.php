@@ -45,24 +45,74 @@
                         </div>
                     @endforeach
 
-                    <div class="clo-md-6">
-                        <input type="file" name="documento">
+                    <div class="col-md-6 m-2">
+                        <input class="form-group" type="file" id="documento_analisis" name="documento">
                     </div>
-                    <div class="clo-md-6">
-                        <button class="btn btn-primary" type="submit">Importar</button>
+                    <div class="row">
+                        <div class="col-md-6 m-2">
+                            <button class="btn btn-primary" type="submit">Mostrar Datos</button>
+                        </div>
                     </div>
 
                 </form>
             </div>
 
+        </div>
 
+        <div class="row">
             <div class="col-md-2">
-                <button class="btn btn-success">
-                    Exportar
-                </button>
+                <form action="{{route('pdf')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div style="display:none">
+                        @foreach($archivos as $archivo)
+                            <div class="row">
+                                <label class="p-2">ID: </label>
+                                <input type="text" name="id" value="{{ $archivo->id }}">
+                            </div>
+
+                            <div class="row">
+                                <label class="p-2">Carrera: </label>
+                                <input type="text" name="carrera" value="{{ $archivo->carrera }}">
+                            </div>
+
+                            <div class="row">
+                                <label class="p-2">Facultad: </label>
+                                <input type="text" name="facultad" value="{{ $archivo->facultad }}">
+                            </div>
+                            <div class="row">
+                                <label class="p-2">Localidad: </label>
+                                <input type="text" name="localidad" value="{{ $archivo->localidad }}">
+                            </div>
+                        @endforeach
+
+                        <div class="clo-md-6">
+                            <input type="file" id="documento_exportar" name="documento">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 m-2">
+                            <button class="btn btn-danger" type="submit">Guardar PDF</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        var input1 = document.getElementById('documento_analisis');
+        var input2 = document.getElementById('documento_exportar');
+
+        input1.addEventListener('change', function(e) {
+            if (e.target.files[0]) {
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(e.target.files[0]);
+                input2.files = dataTransfer.files;
+                //document.body.append('Archivo seleccionado ' + e.target.files[0].name);
+            }
+
+        });
+      </script>
 </body>
 
 </html>
