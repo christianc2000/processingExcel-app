@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Archivo;
 use App\Models\Cuestionario;
 use App\Models\Fuente;
 use App\Models\Pregunta;
@@ -159,7 +160,6 @@ class ImportarArchivoController extends Controller
         {
             $c = substr($cadena, $pos);
             $c = trim($c);
-            $numero = $numero . ".";
 
             for ($j = 0; $j < strlen($numero); $j++) {
                 if ($c[$j] != $numero[$j]) {
@@ -168,8 +168,28 @@ class ImportarArchivoController extends Controller
             }
 
             return true;
-        }
+            // $longitud = strlen($cadena);
+            // $esNumero = false;
 
+            // for ($i = 0; $i < $longitud; $i++) {
+            //     $caracter = $cadena[$i];
+
+            //     if ($i === 0) {
+            //         // Verificamos si el primer carácter es un número
+            //         if (ctype_digit($caracter)) {
+            //             $esNumero = true;
+            //         } else {
+            //             return false; // No es un número, retornamos false
+            //         }
+            //     } elseif ($caracter === '.') {
+            //         // Hemos llegado al punto, si es un número, retornamos true
+            //         return $esNumero;
+            //     } elseif (!ctype_digit($caracter)) {
+            //         // Si no es un número, retornamos false
+            //         return false;
+            //     }
+            // }
+        }
         function separarCadenasEspecificasProcesamiento($cadena, $numeroEspecifico)
         {
             $valor = "";
@@ -182,13 +202,17 @@ class ImportarArchivoController extends Controller
                     // Verificamos si el número próximo es igual al número que le pasamos
                     $coma = true;
                 } else {
-                   // return siguienteEsNumero($cadena, $i, $numeroEspecifico);
-                    if ($coma && siguienteEsNumero($cadena, $i, $numeroEspecifico)) {
-                        $elementos[] = trim($valor);
-                        $valor = ""; // Reiniciamos el valor
-                    } else {
+                    if ($coma) {
+
+                        if (siguienteEsNumero($cadena, $i, $numeroEspecifico)) {
+                            $elementos[] = trim($valor);
+                            $valor = ""; // Reiniciamos el valor
+                        } else {
+                            $valor = $valor . $cadena[$i - 1] . $cadena[$i];
+                        }
                         $coma = false;
-                        $valor .= $cadena[$i]; // Concatenamos el carácter
+                    } else {
+                        $valor = $valor . $cadena[$i]; // Concatenamos el carácter
                     }
                 }
             }
@@ -197,12 +221,31 @@ class ImportarArchivoController extends Controller
 
             return $elementos;
         }
+        function extraerTextoYVerificarNumeroProcesamiento($cadena)
+        {
+            // Busca la posición del primer punto
+            $posicionPunto = strpos($cadena, '.');
 
+            if ($posicionPunto !== false) {
+                // Extrae el texto hasta el primer punto
+                $textoExtraido = substr($cadena, 0, $posicionPunto);
+
+                // Verifica si el texto extraído es un número
+                if (is_numeric($textoExtraido)) {
+                    return true; // Es un número
+                } else {
+                    return false; // No es un número
+                }
+            } else {
+                // No se encontró ningún punto en la cadena
+                return false;
+            }
+        }
         if ($request->hasFile('documento')) {
             $file = $request->file('documento');
             //EXTRAEMOS EL NOMBRE DEL ARCHIVO
-            $nombreArchivo = trim($file->getClientOriginalName());
-            $nombreArchivo = extraerTexto($nombreArchivo);
+            $nombreArchivo1 = trim($file->getClientOriginalName());
+            $nombreArchivo = extraerTexto($nombreArchivo1);
 
             // $categorias = ["AUTORIDADES", "DOCENTES", "EMPLEADORES", "ESTUDIANTES", "TITULADOS"];
             $fuente = Fuente::all()->where('nombre', strtoupper($nombreArchivo))->first();
@@ -223,6 +266,8 @@ class ImportarArchivoController extends Controller
                     $encuesta = [
                         'poblacion' => $encuestados,
                         'preguntas' => (count($transposedData) - 1),
+                        'fuente'=> $fuente->id,
+                        'nombreArchivo'=>$nombreArchivo1,
                         'resultado' => null
                     ];
                     $resultado = new Collection();
@@ -235,6 +280,7 @@ class ImportarArchivoController extends Controller
                         //llenar respuestas a colleccion
                         for ($j = 0; $j < count($respuestas); $j++) {
                             $respuestaColeccion->push([
+                                
                                 'valor' => $respuestas[$j],
                                 'cantidad' => 0
                             ]);
@@ -247,10 +293,12 @@ class ImportarArchivoController extends Controller
                             if (in_array("C", $tipo)) { //ES UNISELECCION CON CONDICIONAL, SE DEBE CONTROLAR LAS RESPUESTAS
                                 for ($k = 1; $k <= $encuestados; $k++) {
                                     $respuestaPregunta = trim($transposedData[$i][$k]); //EXTRAE LA RESPUESTA DEL ARRAY DEL EXCEL TRANSPUESTO
+                                    $respuestaPregunta = strtoupper(str_replace(' ', '', $respuestaPregunta));
                                     if ($respuestaPregunta != null) {
                                         $muestra++;
                                         $respuestaColeccion = $respuestaColeccion->map(function ($item) use ($respuestaPregunta) {
-                                            if ($item['valor'] === $respuestaPregunta || $item['valor'] == $respuestaPregunta) {
+                                            $valor_sin_espacios = strtoupper(str_replace(' ', '', $item['valor']));
+                                            if (trim($valor_sin_espacios) == trim($respuestaPregunta)) {
                                                 $item['cantidad'] = $item['cantidad'] + 1;
                                             }
                                             return $item;
@@ -258,12 +306,20 @@ class ImportarArchivoController extends Controller
                                     }
                                 }
                             } else { //ES SOLO UNISELECCION
+                                //    if ($i == 29) {
 
                                 for ($k = 1; $k <= $encuestados; $k++) {
                                     $respuestaPregunta = trim($transposedData[$i][$k]); //EXTRAE LA RESPUESTA DEL ARRAY DEL EXCEL TRANSPUESTO  
+
+                                    // Eliminar todos los espacios de $respuestaPregunta
+                                    $respuestaPregunta = strtoupper(str_replace(' ', '', $respuestaPregunta));
+
                                     $muestra++;
+
                                     $respuestaColeccion = $respuestaColeccion->map(function ($item) use ($respuestaPregunta) {
-                                        if ($item['valor'] === $respuestaPregunta || $item['valor'] == $respuestaPregunta) {
+                                        // Eliminar todos los espacios de $item['valor']
+                                        $valor_sin_espacios = strtoupper(str_replace(' ', '', $item['valor']));
+                                        if (trim($valor_sin_espacios) == trim($respuestaPregunta)) {
                                             $item['cantidad'] = $item['cantidad'] + 1;
                                         }
                                         return $item;
@@ -272,41 +328,56 @@ class ImportarArchivoController extends Controller
                                 if ($muestra != $encuestados) {
                                     return "Está mal";
                                 }
+                                // }
                             }
                         } else {
                             //EN EL OTRO CASO SERÍA MULTISELECCION
+
                             $numeroPregunta = extraerNumeroTextoProcesamiento($pregunta);
+
                             for ($k = 1; $k <= $encuestados; $k++) {
                                 // $verificaTexto = extraerTextoYVerificarNumero($transposedData[$i][$k]);
                                 // $respuestaPregunta = explode("|", trim($transposedData[$i][$k])); //EXTRAE LA RESPUESTA DEL ARRAY DEL EXCEL TRANSPUESTO
-                                $respuestaPregunta = $transposedData[$i][$k];
+                                $respuestaPregunta = trim($transposedData[$i][$k]);
                                 if ($respuestaPregunta != null) {
-
-                                    $respuestaPregunta = separarCadenasEspecificasProcesamiento($transposedData[$i][$k], $numeroPregunta);
-                                    return $respuestaPregunta;
-                                    if ($k == 3) {
+                                    $contieneNumero = extraerTextoYVerificarNumeroProcesamiento($transposedData[$i][$k]);
+                                    if ($contieneNumero) { //SI LA RESPUESTA CONTIENE NUMERO SEPARAR POR NUMERO
+                                        $respuestaPregunta = separarCadenasEspecificasProcesamiento($transposedData[$i][$k], $numeroPregunta);
                                         $muestra++;
                                         foreach ($respuestaPregunta as $rp) {
                                             $rp = trim($rp);
+                                            $rp = strtoupper(str_replace(' ', '', $rp));
+                                            // return $respuestaColeccion;
                                             $respuestaColeccion = $respuestaColeccion->map(function ($item) use ($rp) {
-                                                if (trim($item['valor']) === $rp || strtoupper(trim($item['valor'])) == strtoupper($rp)) {
+                                                $valor_sin_espacios = strtoupper(str_replace(' ', '', $item['valor']));
+                                                if (trim($valor_sin_espacios) == trim($rp)) {
+                                                    $item['cantidad'] = $item['cantidad'] + 1;
+                                                }
+                                                return $item;
+                                            });
+                                            $respuestaPregunta;
+                                        }
+                                    } else { //NO SEPARAR POR NUMERO
+                                        // if($i==44){
+                                        //     return $respuestaColeccion;
+                                        // }
+                                        //EXTRAE LA RESPUESTA DEL ARRAY DEL EXCEL TRANSPUESTO  
+
+                                        $respuestaPregunta = strtoupper(str_replace(' ', '', $respuestaPregunta));
+                                        $respuestaPregunta = \explode(",", $respuestaPregunta);
+
+
+                                        $muestra++;
+                                        foreach ($respuestaPregunta as $rp) {
+                                            $respuestaColeccion = $respuestaColeccion->map(function ($item) use ($rp) {
+                                                $valor_sin_espacios = strtoupper(str_replace(' ', '', $item['valor']));
+                                                if (trim($valor_sin_espacios) == trim($rp)) {
                                                     $item['cantidad'] = $item['cantidad'] + 1;
                                                 }
                                                 return $item;
                                             });
                                         }
-                                        return $respuestaPregunta;
                                     }
-                                    // $muestra++;
-                                    // foreach ($respuestaPregunta as $rp) {
-                                    //     $rp = trim($rp);
-                                    //     $respuestaColeccion = $respuestaColeccion->map(function ($item) use ($rp) {
-                                    //         if ($item['valor'] === $rp || strtoupper($item['valor']) == strtoupper($rp)) {
-                                    //             $item['cantidad'] = $item['cantidad'] + 1;
-                                    //         }
-                                    //         return $item;
-                                    //     });
-                                    // }
                                 }
                             }
                         }
@@ -316,16 +387,24 @@ class ImportarArchivoController extends Controller
                             'muestra' => $muestra,
                             'respuesta' => $respuestaColeccion
                         ]);
+                        //insertar datos a la base de datos
+
                     }
-                    return $resultado;
+                    $encuesta['resultado'] = $resultado;
+                    
+
+                    return response()->json(['data' => $encuesta, 'succes' => true]);
                 } else {
-                    echo "los datos están vacios";
+                    // echo "los datos están vacios";
+                    return response()->json(['error' => ['message' => 'Error: validación de datos incorrecta']], 422);
                 }
             } else {
-                return "archivo con nombre incorrecto";
+                // return "archivo con nombre incorrecto";
+                return response()->json(['error' => ['message' => 'Error: validación de datos incorrecta']], 422);
             }
         } else {
-            return "no hay archivo";
+            // return "no hay archivo";
+            return response()->json(['error' => ['message' => 'Error: Archivo no encontrado']], 404);
         }
     }
     public function importar(Request $request)

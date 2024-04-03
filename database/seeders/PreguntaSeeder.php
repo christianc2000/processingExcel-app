@@ -290,7 +290,7 @@ class PreguntaSeeder extends Seeder
         $pregunta->fuentes()->attach([1,2,4],['estado'=>true]);
         $pregunta = Pregunta::create([
             'enunciado' => '32. ¿Qué becas para los estudiantes conoce (seleccione las que conoce) (D.E.)',
-            'tipo' => 'U',
+            'tipo' => 'M',
             // 'fuente'=>'D,E',
             'respuesta' => '32.1 De excelencia|32.2 Becas IDH estudio|32.3 Becas IDH interacción social|32.4 Becas IDH Investigación científica|32.5 Becas IDH investigación tesis|32.6 Becas IDH albergue universitario|32.7 Becas IDH Internado rotatorio|32.8 Becas IDH comedor|32.9 Becas facultativas comedor',
             'dimension_id' => 1,
@@ -404,7 +404,7 @@ class PreguntaSeeder extends Seeder
             'enunciado' => '46. ¿Cómo es el Plan de Estudios de la Carrera en la actualidad? (A.D.E)',
             'tipo' => 'U',
             // 'fuente'=>'A,D,E',
-            'respuesta' => 'RÍGIDO|FLEXIBLE|NO SABE',
+            'respuesta' => 'RIGIDO|FLEXIBLE|NO SABE',
             'dimension_id' => 2,
         ]);
         $pregunta->fuentes()->attach([1,2,4],['estado'=>true]);
@@ -420,7 +420,7 @@ class PreguntaSeeder extends Seeder
             'enunciado' => '47.1 En caso que la respuesta sea SI ¿En qué instancias se evalúan? (A.D.E.)',
             'tipo' => 'M,C',
             // 'fuente'=>'A,D,E',
-            'respuesta' => '1. Consejo Facultativo|2. Consejo de Carrera|3. Jornadas Académicas|4. Asamblea|5. Seguimiento y Evaluación Curricular',
+            'respuesta' => 'Consejo Facultativo|Consejo de Carrera|Jornadas Académicas|Asamblea|Seguimiento y Evaluación Curricular',
             'dimension_id' => 2,
         ]);
         $pregunta->fuentes()->attach([1,2,4],['estado'=>true]);
@@ -1092,7 +1092,7 @@ class PreguntaSeeder extends Seeder
             'enunciado' => '111. El ambiente académico dentro de la biblioteca es: (D.E.)',
             'tipo' => 'U',
             // 'fuente'=>'D,E',
-            'respuesta' => '111.1 Cómodo|111.2. Desordenado|111.3 Caótico|111.4 No se presta al uso destinado|111.5 Respetuoso',
+            'respuesta' => '111.1  Cómodo|111.2. Desordenado|111.3 Caótico|111.4 No se presta al uso destinado|111.5 Respetuoso',
             'dimension_id' => 4,
         ]);
         $pregunta->fuentes()->attach([2,4],['estado'=>true]);

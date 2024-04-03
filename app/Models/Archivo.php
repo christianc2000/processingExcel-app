@@ -12,7 +12,6 @@ class Archivo extends Model
         'nombre',
         'fuente_id',
         'carrera_facultad_id',
-
     ];
 
     public function fuente(){
