@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Archivo;
+use App\Models\ArchivoPregunta;
 use App\Models\Cuestionario;
 use App\Models\Fuente;
 use App\Models\Pregunta;
@@ -266,21 +267,20 @@ class ImportarArchivoController extends Controller
                     $encuesta = [
                         'poblacion' => $encuestados,
                         'preguntas' => (count($transposedData) - 1),
-                        'fuente'=> $fuente->id,
-                        'nombreArchivo'=>$nombreArchivo1,
+                        'fuente' => $fuente->id,
+                        'nombreArchivo' => $nombreArchivo1,
                         'resultado' => null
                     ];
                     $resultado = new Collection();
                     // return count($transposedData);
                     for ($i = 1; $i < count($transposedData); $i++) { //verificar que el numero de respuestas sea igual para todos
                         $pregunta = trim($transposedData[$i][0]);
-
+                        $id_pregunta = $preguntasFuente[$i - 1]['id'];
                         $respuestas = explode("|", $preguntasFuente[$i - 1]['respuesta']);
                         $respuestaColeccion = new Collection();
                         //llenar respuestas a colleccion
                         for ($j = 0; $j < count($respuestas); $j++) {
                             $respuestaColeccion->push([
-                                
                                 'valor' => $respuestas[$j],
                                 'cantidad' => 0
                             ]);
@@ -382,6 +382,7 @@ class ImportarArchivoController extends Controller
                             }
                         }
                         $resultado->push([
+                            'id' => $id_pregunta,
                             'pregunta' => $pregunta,
                             'tipo' => $tipo,
                             'muestra' => $muestra,
@@ -391,16 +392,52 @@ class ImportarArchivoController extends Controller
 
                     }
                     $encuesta['resultado'] = $resultado;
-                    
+                    // return response()->json(['data' => $encuesta, 'succes' => true]);
+                    $archivoPrueba = Archivo::all()->where('fuente_id', $encuesta['fuente'])->first();
 
-                    return response()->json(['data' => $encuesta, 'succes' => true]);
+                    if ($archivoPrueba == null) {
+                     // return response()->json(['data' => $encuesta, 'succes' => true]);
+                        $a = Archivo::create([
+                            'nombre' => $encuesta['nombreArchivo'],
+                            'fuente_id' => $encuesta['fuente'],
+                            'carrera_facultad_id' => $request['carrera_facultad_id'],
+                        ]);
+                        foreach ($resultado as $r) {
+                            foreach ($r['respuesta'] as $respuesta) {
+                                ArchivoPregunta::create([
+                                    'respuesta' => $respuesta['valor'],
+                                    'porcentaje'=> ($respuesta['cantidad']>0)?round((($respuesta['cantidad']*100)/$r['muestra']),2):0,
+                                    'cantidad' => ($respuesta['cantidad']==null)?0:$respuesta['cantidad'],
+                                    'archivo_id' => $a->id,
+                                    'pregunta_id' => $r['id']
+                                ]);
+                            }
+                        }
+                        return response()->json(['data' => $a, 'succes' => true]);
+                    }
+                     else {
+                       // return response()->json(['data' => $encuesta, 'succes' => true]);
+                        $a = Archivo::find($archivoPrueba->id);
+                        $a->nombre= $encuesta['nombreArchivo'];
+                        $a->save();
+
+                        foreach ($resultado as $r) {
+                            foreach ($r['respuesta'] as $respuesta) {
+                                $archivo_pregunta=$a->archivoPreguntas->where('pregunta_id',$r['id'])->where('respuesta',$respuesta['valor'])->first();
+                                $archivo_pregunta->cantidad=$respuesta['cantidad'];
+                                $archivo_pregunta->porcentaje=($respuesta['cantidad']>0)?round((($respuesta['cantidad']*100)/$r['muestra']),2):0;
+                                $archivo_pregunta->save();
+                            }
+                        }
+                        return response()->json(['data' => $a, 'succes' => true]);
+                    }
                 } else {
                     // echo "los datos están vacios";
-                    return response()->json(['error' => ['message' => 'Error: validación de datos incorrecta']], 422);
+                    return response()->json(['error' => ['message' => 'Error: los datos están vacios']], 422);
                 }
             } else {
                 // return "archivo con nombre incorrecto";
-                return response()->json(['error' => ['message' => 'Error: validación de datos incorrecta']], 422);
+                return response()->json(['error' => ['message' => 'Error: archivo con nombre incorrecto']], 422);
             }
         } else {
             // return "no hay archivo";

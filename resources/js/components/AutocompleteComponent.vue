@@ -123,7 +123,7 @@ export default {
                     // Realiza la solicitud POST con el formData
                     axios.post('/importar/procesar/archivo', formData)
                         .then(response => {
-                            const id = response.data.id;
+                           // const id = response.data.id;
                             console.log(response.data);
                             //window.location.href = "http://127.0.0.1:8000/importar/" + id;
                         })
