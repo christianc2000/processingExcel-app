@@ -36,12 +36,13 @@ class CarreraFacultadController extends Controller
 
     public function mostrarDatosCarrera(Request $request){
 
+        //Aqui se debería procesar y guardar el archivo, junto con su nombre para luego ver esos resultados
+
         $archivo = new Archivo();
 
         $archivo->nombre = $request->input('carrera');
-        $archivo->categoria_id = 1;
         $archivo->carrera_facultad_id = $request->input('id');
-        $archivo->cuestionario_id = 1;
+      
 
         $archivo->save();
 
@@ -51,12 +52,12 @@ class CarreraFacultadController extends Controller
     public function resultados($id){
 
         $archivos = DB::table('archivos')
-                        ->join('categorias', 'archivos.categoria_id', '=', 'categorias.id')
+                        ->join('fuentes', 'archivos.fuente_id', '=', 'fuentes.id')
                         ->join('carreras_facultad', 'archivos.carrera_facultad_id', '=', 'carreras_facultad.id')
                         ->join('facultades', 'carreras_facultad.facultad_id', '=', 'facultades.id')
                         ->join('carreras', 'carreras_facultad.carrera_id', '=', 'carreras.id')
                         ->join('localidades', 'facultades.localidad_id', '=', 'localidades.id')
-                        ->select('archivos.id as id', 'categorias.nombre as categoria', 'facultades.nombre as facultad', 'carreras.nombre as carrera', 'localidades.nombre as localidad', 'archivos.nombre as nombre')
+                        ->select('archivos.id as id', 'fuentes.nombre as categoria', 'facultades.nombre as facultad', 'carreras.nombre as carrera', 'localidades.nombre as localidad', 'archivos.nombre as nombre')
                         ->where('archivos.id', '=',$id)
                         ->get();
 

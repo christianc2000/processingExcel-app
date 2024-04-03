@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('preguntas', function (Blueprint $table) {
             $table->id();
             $table->text('enunciado');
-            $table->string('tipo', 1); //U=Unirespuesta, M=Multirespuesta
-            $table->foreignId('cuestionario_id')->references('id')->on('cuestionarios')->onDelete('cascade');
-            $table->foreignId('respuesta_definida_id')->nullable()->references('id')->on('respuesta_definidas')->onDelete('cascade');
+            $table->string('tipo'); //U=Unirespuesta, M=Multirespuesta, C=Condicional
+            $table->text('respuesta');
+           // $table->string('fuente');
             $table->foreignId('dimension_id')->references('id')->on('dimensions')->onDelete('cascade');
             $table->timestamps();
         });

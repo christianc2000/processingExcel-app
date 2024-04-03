@@ -22,7 +22,7 @@
             clod-md-4"></div>
             <div class="clod-md-6"></div>
             <div class="row">
-                <form action="{{route('importar.archivo.importar')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('importar.archivo.procesar')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     @foreach($archivos as $archivo)
                         <div class="row">

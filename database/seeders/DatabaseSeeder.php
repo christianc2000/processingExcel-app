@@ -12,14 +12,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(CuestionarioSeeder::class);
+        $this->call(FuenteSeeder::class);
         $this->call(DimensionSeeder::class);
-        $this->call(RespuestaDefinidaSeeder::class);
         $this->call(PreguntaSeeder::class);
         $this->call(LocalidadSeeder::class);
         $this->call(FacultadSeeder::class);
         $this->call(CarreraSeeder::class);
         $this->call(CarrerasFacultadSeeder::class);
-        $this->call(CategoriaSeeder::class);
+        
     }
 }

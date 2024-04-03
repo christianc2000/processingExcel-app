@@ -11,23 +11,18 @@ class Pregunta extends Model
     protected $fillable = [
         'enunciado',
         'tipo',
-        'cuestionario_id',
-        'respuesta_definida_id',
-        'dimension_id'
+        // 'fuente',
+        'dimension_id',
+        'fuente_id'
     ];
 
-    public function respuestas()
-    {
-        return $this->belongsToMany(Respuesta::class)->withPivot('cantidad')->withTimestamps();
-    }
-
-    public function cuestionario(){
-        return $this->belongsTo(Cuestionario::class);
-    }
-    public function respuestaDefinida(){
-        return $this->belongsTo(RespuestaDefinida::class);
-    }
     public function dimension(){
         return $this->belongsTo(Dimension::class);
+    }
+    public function archivoPreguntas(){
+        return $this->hasMany(ArchivoPregunta::class);
+    }
+    public function fuentes(){
+        return $this->belongsToMany(Fuente::class)->withPivot('estado')->withTimestamps();;
     }
 }

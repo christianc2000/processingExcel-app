@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pregunta_respuesta', function (Blueprint $table) {
+        Schema::create('archivo_preguntas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('cantidad');
+            $table->text('respuesta');
+            $table->unsignedInteger('cantidad')->default(0);
             $table->foreignId('pregunta_id')->references('id')->on('preguntas')->onDelete('cascade');
-            $table->foreignId('respuesta_id')->references('id')->on('respuestas')->onDelete('cascade');
+            $table->foreignId('archivo_id')->references('id')->on('archivos')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pregunta_respuesta');
+        Schema::dropIfExists('archivo_preguntas');
     }
 };

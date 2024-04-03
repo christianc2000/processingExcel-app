@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('importar/{id}', [App\Http\Controllers\Web\ImportarArchivoController::class,'index'])->name('importar.archivo');
 
 Route::post('importar/archivo',[ImportarArchivoController::class,'importar'])->name('importar.archivo.importar');
+
+Route::post('importar/procesar/archivo',[ImportarArchivoController::class,'procesarArchivo'])->name('importar.archivo.procesar');
 Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -38,3 +40,5 @@ Route::get('/datos', [App\Http\Controllers\CarreraFacultadController::class, 'mo
 Route::get('/resultados/{id}', [App\Http\Controllers\CarreraFacultadController::class, 'resultados'])->name('resultados');
 
 Route::post('/procesamiento/pdf', [App\Http\Controllers\Web\ImportarArchivoController::class, 'pdf'])->name('pdf');
+
+Route::get('/preguntas',[ImportarArchivoController::class,'preguntas'])->name('importar.preguntas');

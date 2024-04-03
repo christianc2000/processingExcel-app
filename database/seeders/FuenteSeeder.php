@@ -6,40 +6,44 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CategoriaSeeder extends Seeder
+class FuenteSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('categorias')->insert([
+        DB::table('fuentes')->insert([
             [
-                'nombre'            => 'Autoridades',
+                'nombre'            => 'AUTORIDADES',
+                'abreviacion' => 'A',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ],
             [
-                'nombre'            => 'Docentes',
+                'nombre'            => 'DOCENTES',
+                'abreviacion' => 'D',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ],
             [
-                'nombre'            => 'Empleadores',
+                'nombre'            => 'EMPLEADORES',
+                'abreviacion' => 'Em',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ],
             [
-                'nombre'            => 'Estudiantes',
+                'nombre'            => 'ESTUDIANTES',
+                'abreviacion' => 'E',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ],
             [
-                'nombre'            => 'Titulados',
+                'nombre'            => 'TITULADOS',
+                'abreviacion' => 'T',
                 'created_at'        => now(),
                 'updated_at'        => now()
             ]
-
 
         ]);
     }

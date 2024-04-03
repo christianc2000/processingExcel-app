@@ -11,4 +11,7 @@ class CarreraFacultad extends Model
 
     public $table = "carreras_facultad";
 
+    public function archivos(){
+        return $this->hasMany(Archivo::class);
+    }
 }

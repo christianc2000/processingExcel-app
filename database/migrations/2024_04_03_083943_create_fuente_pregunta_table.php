@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('respuesta_definidas', function (Blueprint $table) {
+        Schema::create('fuente_pregunta', function (Blueprint $table) {
             $table->id();
-            $table->text('respuesta');
+            $table->boolean('estado')->default('true');
+            $table->foreignId('fuente_id')->references('id')->on('fuentes');
+            $table->foreignId('pregunta_id')->references('id')->on('preguntas');
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('respuesta_definidas');
+        Schema::dropIfExists('fuente_pregunta');
     }
 };

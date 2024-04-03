@@ -10,12 +10,18 @@ class Archivo extends Model
     use HasFactory;
     protected $fillable=[
         'nombre',
-        'categoria_id',
+        'fuente_id',
         'carrera_facultad_id',
-        'cuestionario_id'
+
     ];
 
-    public function cuestionario(){
-        return $this->belongsTo(Cuestionario::class);
+    public function fuente(){
+        return $this->belongsTo(Fuente::class);
+    }
+    public function carreraFacultad(){
+        return $this->belongsTo(CarreraFacultad::class);
+    }
+    public function archivoPreguntas(){
+        return $this->hasMany(ArchivoPregunta::class);
     }
 }
