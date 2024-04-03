@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('respuesta');
             $table->unsignedInteger('cantidad')->default(0);
+            $table->decimal('porcentaje',8,2);
             $table->foreignId('pregunta_id')->references('id')->on('preguntas')->onDelete('cascade');
             $table->foreignId('archivo_id')->references('id')->on('archivos')->onDelete('cascade');
             $table->timestamps();

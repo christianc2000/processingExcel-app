@@ -10,7 +10,10 @@ class ArchivoPregunta extends Model
     use HasFactory;
     protected $fillable=[
         'respuesta',
-        'cantidad'
+        'cantidad',
+        'porcentaje',
+        'archivo_id',
+        'pregunta_id'
     ];
 
     public function archivo(){
