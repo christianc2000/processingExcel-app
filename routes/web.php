@@ -42,6 +42,6 @@ Route::post('/datos', [App\Http\Controllers\CarreraFacultadController::class, 'm
 Route::get('/datos', [App\Http\Controllers\CarreraFacultadController::class, 'mostrarDatosCarrera'])->name('datos');
 Route::get('/resultados/{id}', [App\Http\Controllers\CarreraFacultadController::class, 'resultados'])->name('resultados');
 
-Route::post('/procesamiento/pdf', [App\Http\Controllers\Web\ImportarArchivoController::class, 'pdf'])->name('pdf');
+Route::get('/procesamiento/pdf/{id}', [App\Http\Controllers\Web\ImportarArchivoController::class, 'pdf'])->name('pdf');
 
 Route::get('/preguntas',[ImportarArchivoController::class,'preguntas'])->name('importar.preguntas');

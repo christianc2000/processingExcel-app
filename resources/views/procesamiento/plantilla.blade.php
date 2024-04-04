@@ -84,9 +84,9 @@
                 <p class="encabezado derecha">{{ $horaActual }}</p>
                 <div class="encabezado derecha">
                     <a href="{{route('exportar.excel',$archivo->id)}}" class="btn btn-success btn-sm">Excel</a>
-                    <button class="btn btn-primary btn-sm">PDF</button>
+                    <a href="{{route('pdf',$archivo->id)}}" class="btn btn-primary btn-sm">PDF</a>
                 </div>
-                
+
                 {{-- <button class="btn btn-primary">PDF</button> --}}
             </div>
         </div>
