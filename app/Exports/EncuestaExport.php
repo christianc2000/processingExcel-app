@@ -30,19 +30,19 @@ class EncuestaExport implements FromView, WithStyles, ShouldAutoSize
     public function styles(Worksheet $sheet)
     {
         // Aplicar estilos a las celdas
-        $sheet->getStyle('A1:B1')->applyFromArray([
-            'font' => [
-                'bold' => true,
-            ],
-            'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-            ],
-            'borders' => [
-                'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                ],
-            ],
-        ]);
+        // $sheet->getStyle('A1:B1:C1:D1:E1')->applyFromArray([
+        //     'font' => [
+        //         'bold' => true,
+        //     ],
+        //     'alignment' => [
+        //         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+        //     ],
+        //     // 'borders' => [
+        //     //     'allBorders' => [
+        //     //         'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+        //     //     ],
+        //     // ],
+        // ]);
 
         // Agregar más estilos según sea necesario...
     }

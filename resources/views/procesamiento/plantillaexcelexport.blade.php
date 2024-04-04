@@ -23,46 +23,52 @@
 
     table,
     td {
-        font-family: Arial, sans-serif;
+        font-family: Arial;
     }
 
     .mayuscula {
         text-transform: uppercase;
     }
 </style>
-<table style="width: 100%">
+<table style="width: 120px">
     <thead>
         <tr>
-            <th scope="col" style="width: 50px; background-color: #ccc; font-weight: bold;">Columna 1</th>
-            <th scope="col" style="width: 50px;background-color: #ccc; font-weight: bold;">Columna 2</th>
-            <th scope="col" style="width: 800px;background-color: #ccc; font-weight: bold;">Columna 3</th>
-            <th scope="col" style="width: 50px;background-color: #ccc; font-weight: bold;">Columna 4</th>
-            <th scope="col" style="width: 50px;background-color: #ccc; font-weight: bold;">Columna 5</th>
+            <th scope="col" style="width: 60px; ">Columna 1</th>
+            <th scope="col" style="width: 60px;">Columna 2</th>
+            <th scope="col" style="width: 380px;">Columna 3</th>
+            <th scope="col" style="width: 60px;">Columna 4</th>
+            <th scope="col" style="width: 60px;">Columna 5</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td colspan="3">UAGRM</td>
-            <td colspan="2" class="derechaTexto">{{ $fechaActual }}</td>
+            <td colspan="3" style="text-align: left;font-size: 11px;font-family: Arial;font-weight: 100">UAGRM</td>
+            <td colspan="2" style="text-align: right;font-size: 10px;font-family: Arial;font-weight: 100">{{ $fechaActual }}</td>
         </tr>
         <tr>
-            <td colspan="3">D.E.A. Autoevaluación</td>
-            <td colspan="2" class="derechaTexto">{{ $horaActual }}</td>
+            <td colspan="3" style="text-align: left;font-size: 11px;font-family: Arial;font-weight: 100">D.E.A.
+                Autoevaluación</td>
+            <td colspan="2" style="text-align: right;font-size: 11px;font-family: Arial;font-weight: 100">{{ $horaActual }}</td>
         </tr>
         <tr>
-            <td colspan="5">Santa Cruz</td>
-        </tr>
-        <tr>
-            <td colspan="5" class="titulo-seccion centrarTexto">RESUMEN {{ strtoupper($archivo->fuente->nombre) }}
+            <td colspan="5" style="text-align: left;font-size: 11px;font-family: Arial;font-weight: 100">Santa Cruz
             </td>
         </tr>
         <tr>
-            <td colspan="5" class="titulo-seccion2 centrarTexto">
-                {{ strtoupper($archivo->carreraFacultad->carrera->nombre) }}</td>
+            <td colspan="5"
+                style="font-size: 13px;font-family: Arial; text-align:center;font-weight: bold !important;">RESUMEN
+                {{ strtoupper($archivo->fuente->nombre) }}
+            </td>
         </tr>
         <tr>
-            <td colspan="5" class="centrarTexto">
-                <p>{{ 'Cantidad de encuestados: ' . $archivo->cantidad_encuestados }}</p>
+            <td colspan="5"
+                style="font-size: 13px;font-family: Arial; text-align:center;font-weight: bold !important;">
+                Carrera de {{ $archivo->carreraFacultad->carrera->nombre }}</td>
+        </tr>
+        <tr>
+            <td colspan="5"
+                style="font-size: 12px;font-family: Arial; text-align:center;font-weight: 100;">
+                {{ 'Cantidad de encuestados: ' . $archivo->cantidad_encuestados }}
             </td>
         </tr>
         <tr>
@@ -70,8 +76,9 @@
         </tr>
         @foreach ($dimensiones as $dimension)
             <tr>
-                <td colspan="5">
-                    <p class="mayuscula titulo-seccion2">{{ $dimension->nombre }}</p>
+                <td colspan="5"
+                    style="font-size: 12px;font-family: Arial; text-align:left;font-weight: bold !important;">
+                    {{ $dimension->nombre }}
                 </td>
             </tr>
 
@@ -79,19 +86,23 @@
             @foreach ($archivo->fuente->preguntas->where('dimension_id', $dimension->id) as $pregunta)
                 <tr>
                     <td colspan="1"></td>
-                    <td colspan="4">
-                        <p>{{ $pregunta->enunciado }}</p>
+                    <td colspan="4" style="text-align: left;font-size: 10px;font-family: Arial;font-weight: 100">
+                        {{ $pregunta->enunciado }}
                     </td>
                 </tr>
 
 
                 @foreach ($pregunta->archivoPreguntas->where('archivo_id', $archivo->id)->sortBy('id') as $respuesta)
                     <tr>
-                        <td  colspan="3" style="text-align: right">
-                            <p>{{ $respuesta->respuesta }}</p>
+                        <td colspan="3"
+                            style="text-align: right; font-size: 10px;font-family: Arial;font-weight: 100">
+                            {{ $respuesta->respuesta }}
                         </td>
-                        <td colspan="1" style="text-align: center">{{ $respuesta->cantidad }}</td>
-                        <td colspan="1" style="text-align: center">
+                        <td colspan="1"
+                            style="text-align: center; font-size: 10px;font-family: Arial;font-weight: 100">
+                            {{ $respuesta->cantidad }}</td>
+                        <td colspan="1"
+                            style="text-align: center; font-size: 10px;font-family: Arial;font-weight: 100">
                             @if (str_contains($pregunta->tipo, 'U'))
                                 {{ $respuesta->porcentaje . ' %' }}
                             @endif

@@ -104,8 +104,8 @@ class ImportarArchivoController extends Controller
         $fechaActual = Carbon::now()->format('d/m/Y');
         $horaActual = Carbon::now()->format('H:i:s');
         if (isset($archivo)) {
-            return view('procesamiento.plantilla', compact('archivo', 'dimensiones', 'fechaActual', 'horaActual'));
-            // return view('procesamiento.plantillaexcelexport',compact('archivo','dimensiones','fechaActual','horaActual'));
+             return view('procesamiento.plantilla', compact('archivo', 'dimensiones', 'fechaActual', 'horaActual'));
+            //return view('procesamiento.plantillaexcelexport',compact('archivo','dimensiones','fechaActual','horaActual'));
         } else {
             return "No existe el archivo";
         }
