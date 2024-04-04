@@ -26,6 +26,9 @@ Route::get('importar/{id}', [App\Http\Controllers\Web\ImportarArchivoController:
 Route::post('importar/archivo',[ImportarArchivoController::class,'importar'])->name('importar.archivo.importar');
 
 Route::post('importar/procesar/archivo',[ImportarArchivoController::class,'procesarArchivo'])->name('importar.archivo.procesar');
+
+Route::get('view/archivo/procesado/{id}',[ImportarArchivoController::class,'mostrarArchivoProcesado'])->name('mostrar.archivo.procesado');
+Route::get('exportar-excel/{id}', [ImportarArchivoController::class,'exportarExcel'])->name('exportar.excel');//Exportar el excel
 Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

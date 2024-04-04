@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('archivo_preguntas', function (Blueprint $table) {
             $table->id();
             $table->text('respuesta');
+            $table->unsignedInteger('muestra')->default(0);
             $table->unsignedInteger('cantidad')->default(0);
             $table->decimal('porcentaje',8,2);
             $table->foreignId('pregunta_id')->references('id')->on('preguntas')->onDelete('cascade');

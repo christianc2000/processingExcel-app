@@ -11,41 +11,42 @@
 
     <!-- Scripts -->
     @vite(['resources/js/app.js'])
-    <title>Vista Previa {{ $nombreArchivo }}</title>
+    <title>Vista Previa {{ $archivo->nombre }}</title>
 
     <style>
         body {
-          background-color: white;
-          font-family: 'Arial' !important;
+            background-color: white;
+            font-family: 'Arial' !important;
         }
 
         h1 {
-          color: #000000;
-          text-align: center;
-          font-weight: bold !important;
-          font-size: 14px !important;
-        }
-
-        h2{
             color: #000000;
             text-align: center;
             font-weight: bold !important;
+            font-size: 16px !important;
+        }
+
+        h2 {
+            color: #000000;
+            text-align: center;
+            font-weight: bold !important;
+            font-size: 14px !important;
+        }
+
+        h3 {
+            color: #000000;
+            text-align: center;
             font-size: 12px !important;
         }
 
-        h3{
-            color: #000000;
-            text-align: center;
-            font-size: 10px !important;
-        }
-
-        .encabezado{
+        .encabezado {
             line-height: 2px;
         }
 
         .izquierda {
             text-align: left;
         }
+
         .derecha {
             text-align: right;
         }
@@ -53,13 +54,20 @@
         .mayuscula {
             text-transform: uppercase;
         }
-        .titulo-seccion{
+
+        .titulo-seccion {
             color: #000000;
             text-align: left;
             font-weight: bold !important;
             font-size: 14px !important;
         }
 
+        .titulo-seccion2 {
+            color: #000000;
+            text-align: left;
+            font-weight: semibold !important;
+            font-size: 13px !important;
+        }
     </style>
 </head>
 
@@ -72,56 +80,64 @@
                 <p class="encabezado izquierda">Santa Cruz</p>
             </div>
             <div class="col-6">
-                <p class="encabezado derecha">24/04/2023</p>
-                <p class="encabezado derecha">9:20:20</p>
-
+                <p class="encabezado derecha">{{ $fechaActual }}</p>
+                <p class="encabezado derecha">{{ $horaActual }}</p>
+                <div class="encabezado derecha">
+                    <a href="{{route('exportar.excel',$archivo->id)}}" class="btn btn-success btn-sm">Excel</a>
+                    <button class="btn btn-primary btn-sm">PDF</button>
+                </div>
+                
+                {{-- <button class="btn btn-primary">PDF</button> --}}
             </div>
         </div>
         <div class="row">
-            <h1>RESUMEN DOCENTES</h1>
-            <h2>ENFERMERÍA</h2>
-            <h3>Cantidad de Encuestados: 23</h3>
+            <h1>RESUMEN {{ strtoupper($archivo->fuente->nombre) }}</h1>
+            <h2>Carrera de {{ $archivo->carreraFacultad->carrera->nombre }}</h2>
+            <h3>Cantidad de Encuestados: {{ $archivo->cantidad_encuestados }}</h3>
 
         </div>
-        @foreach ($encuesta['resultado'] as $resultado)
+
+        @foreach ($dimensiones as $dimension)
             <div class="row">
-                <p class="titulo-seccion mayuscula">Nombre Sección</p>
+                <p class="titulo-seccion mayuscula">{{ $dimension->nombre }}</p>
             </div>
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0">{{ $resultado['pregunta'] }}</h5>
-                </div>
-                <div class="card-body">
-                    <table style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th scope="col" style="width: 86%"></th>
-                                <th scope="col" style="width: 7%"></th>
-                                <th scope="col" style="width: 7%"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($resultado['respuesta'] as $respuesta)
-                                @php
-                                    $porcentaje = round(($respuesta['cantidad'] * 100) / $resultado['respondidos'], 1);
-                                @endphp
-                                <tr style="width: 100%">
-                                    <td class="mayuscula" style="text-align: right"><strong>{{ $respuesta['id'] }}</strong>
-                                    </td>
-                                    <td style="text-align: center">{{ $respuesta['cantidad'] }}</td>
-                                    <td style="text-align: center">
-                                        @if ($resultado['tipo'] == 'U')
-                                            {{ $porcentaje." %" }}
-                                        @endif
-                                    </td>
+            {{-- @foreach ($archivo->fuente->preguntas as $pregunta) --}}
+            {{-- {{$archivo->fuente->preguntas->where('dimension_id',$dimension->id)}} --}}
+            @foreach ($archivo->fuente->preguntas->where('dimension_id', $dimension->id) as $pregunta)
+                <div class="card mb-2">
+                    <div class="card-header">
+                        <p class="titulo-seccion2 mayuscula">{{ $pregunta->enunciado }}</p>
+                    </div>
+                    <div class="card-body">
+                        <table style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width: 86%"></th>
+                                    <th scope="col" style="width: 7%"></th>
+                                    <th scope="col" style="width: 7%"></th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($pregunta->archivoPreguntas->where('archivo_id', $archivo->id)->sortBy('id') as $respuesta)
+                                    <tr style="width: 100%">
+                                        <td class="mayuscula" style="text-align: right">
+                                            <strong>{{ $respuesta->respuesta }}</strong>
+                                        </td>
+                                        <td style="text-align: center">{{ $respuesta->cantidad }}</td>
+                                        <td style="text-align: center">
+                                            @if (str_contains($pregunta->tipo, 'U'))
+                                                {{ $respuesta->porcentaje . ' %' }}
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
 
 
+                    </div>
                 </div>
-            </div>
+            @endforeach
         @endforeach
     </div>
 </body>

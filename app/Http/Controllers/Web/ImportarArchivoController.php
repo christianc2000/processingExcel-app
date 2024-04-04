@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Exports\EncuestaExport;
 use App\Http\Controllers\Controller;
 use App\Models\Archivo;
 use App\Models\ArchivoPregunta;
 use App\Models\Cuestionario;
+use App\Models\Dimension;
 use App\Models\Fuente;
 use App\Models\Pregunta;
 use Illuminate\Http\Request;
@@ -95,6 +97,36 @@ class ImportarArchivoController extends Controller
             }
         }
     }
+    public function mostrarArchivoProcesado($id)
+    {
+        $archivo = Archivo::find($id);
+        $dimensiones = Dimension::all();
+        $fechaActual = Carbon::now()->format('d/m/Y');
+        $horaActual = Carbon::now()->format('H:i:s');
+        if (isset($archivo)) {
+            return view('procesamiento.plantilla', compact('archivo', 'dimensiones', 'fechaActual', 'horaActual'));
+            // return view('procesamiento.plantillaexcelexport',compact('archivo','dimensiones','fechaActual','horaActual'));
+        } else {
+            return "No existe el archivo";
+        }
+    }
+    public function exportarExcel($id)
+    {
+        $archivo = Archivo::find($id);
+        $dimensiones = Dimension::all();
+        $fechaActual = Carbon::now()->format('d/m/Y');
+        $fechaSinBarras = str_replace('/', '', $fechaActual);
+
+        $horaActual = Carbon::now()->format('H:i:s');
+        if (isset($archivo)) {
+            return Excel::download(new EncuestaExport($archivo,$dimensiones,$fechaActual,$horaActual), 'archivo_salida_'.$archivo->fuente->nombre.'_'.$fechaSinBarras.'.xlsx');
+            // return view('procesamiento.plantilla', compact('archivo','dimensiones','fechaActual','horaActual'));
+            // return view('procesamiento.plantillaexcelexport', compact('archivo', 'dimensiones', 'fechaActual', 'horaActual'));
+        } else {
+            return "No existe el archivo";
+        }
+    }
+    //**************************METODO PARA PROCESAR */
     public function procesarArchivo(Request $request)
     {
         function extraerTexto($nombreArchivo)
@@ -144,19 +176,6 @@ class ImportarArchivoController extends Controller
                 return "";
             }
         }
-        // function separarCadenasEspecificasProcesamiento($cadena, $numeroEspecifico)
-        // {
-        //     // Construye el patrón de expresión regular con el número específico
-        //     $patron = '/(' . preg_quote($numeroEspecifico) . '[^,]+)/';
-        //     // Encuentra todas las coincidencias según el patrón
-        //     preg_match_all($patron, $cadena, $coincidencias);
-
-        //     // Obtiene los elementos resultantes
-        //     $elementos = $coincidencias[1];
-        //     $elementos = array_map('trim', $elementos);
-
-        //     return $elementos;
-        // }
         function siguienteEsNumero($cadena, $pos, $numero)
         {
             $c = substr($cadena, $pos);
@@ -242,6 +261,18 @@ class ImportarArchivoController extends Controller
                 return false;
             }
         }
+        function contarPreguntas($array)
+        {
+            $c = 0;
+            for ($i = 0; $i < count($array); $i++) {
+                if ($array[$i] == null) {
+                    return $c - 1;
+                }
+                $c++;
+            }
+            return $c - 1;
+        }
+        // return $request->carrera_facultad_id;
         if ($request->hasFile('documento')) {
             $file = $request->file('documento');
             //EXTRAEMOS EL NOMBRE DEL ARCHIVO
@@ -256,11 +287,11 @@ class ImportarArchivoController extends Controller
                 $datos = Excel::toArray([], $file);
 
                 $transposedData = array_map(null, ...$datos[0]); //para que se agrupen de preguntas y sus respuestas
-                // return count($transposedData)-1;
-
-                if (!empty($datos) && count($datos[0]) > 1 && (count($transposedData) - 1) == count($fuente->preguntas)) {
+                $cantidadPreguntas = contarPreguntas($datos[0][0]);
+                if (!empty($datos) && count($datos[0]) > 1 && $cantidadPreguntas == count($fuente->preguntas)) {
                     //crear las preguntas archivo segun la categoría
                     $encuestados = cantidadEncuestados($datos[0]);
+
                     $preguntasFuente = $fuente->preguntas;
                     // return $preguntasFuente[0];
                     //  return $encuestados;
@@ -272,8 +303,8 @@ class ImportarArchivoController extends Controller
                         'resultado' => null
                     ];
                     $resultado = new Collection();
-                    // return count($transposedData);
-                    for ($i = 1; $i < count($transposedData); $i++) { //verificar que el numero de respuestas sea igual para todos
+                    // return $transposedData;
+                    for ($i = 1; $i <= $cantidadPreguntas; $i++) { //verificar que el numero de respuestas sea igual para todos
                         $pregunta = trim($transposedData[$i][0]);
                         $id_pregunta = $preguntasFuente[$i - 1]['id'];
                         $respuestas = explode("|", $preguntasFuente[$i - 1]['respuesta']);
@@ -393,12 +424,13 @@ class ImportarArchivoController extends Controller
                     }
                     $encuesta['resultado'] = $resultado;
                     // return response()->json(['data' => $encuesta, 'succes' => true]);
-                    $archivoPrueba = Archivo::all()->where('fuente_id', $encuesta['fuente'])->first();
+                    $archivoPrueba = Archivo::all()->where('fuente_id', $encuesta['fuente'])->where('carrera_facultad_id', $request->carrera_facultad_id)->first();
 
                     if ($archivoPrueba == null) {
-                     // return response()->json(['data' => $encuesta, 'succes' => true]);
+                        // return response()->json(['data' => $encuesta, 'succes' => true]);
                         $a = Archivo::create([
                             'nombre' => $encuesta['nombreArchivo'],
+                            'cantidad_encuestados' => $encuesta['poblacion'],
                             'fuente_id' => $encuesta['fuente'],
                             'carrera_facultad_id' => $request['carrera_facultad_id'],
                         ]);
@@ -406,29 +438,32 @@ class ImportarArchivoController extends Controller
                             foreach ($r['respuesta'] as $respuesta) {
                                 ArchivoPregunta::create([
                                     'respuesta' => $respuesta['valor'],
-                                    'porcentaje'=> ($respuesta['cantidad']>0)?round((($respuesta['cantidad']*100)/$r['muestra']),2):0,
-                                    'cantidad' => ($respuesta['cantidad']==null)?0:$respuesta['cantidad'],
+                                    'muestra' => $r['muestra'],
+                                    'porcentaje' => ($respuesta['cantidad'] > 0) ? round((($respuesta['cantidad'] * 100) / $r['muestra']), 2) : 0,
+                                    'cantidad' => ($respuesta['cantidad'] == null) ? 0 : $respuesta['cantidad'],
                                     'archivo_id' => $a->id,
                                     'pregunta_id' => $r['id']
                                 ]);
                             }
                         }
+                        // return redirect()->route('mostrar.archivo.procesado', ['id' => $a->id]);
                         return response()->json(['data' => $a, 'succes' => true]);
-                    }
-                     else {
-                       // return response()->json(['data' => $encuesta, 'succes' => true]);
+                    } else {
+                        // return response()->json(['data' => $encuesta, 'succes' => true]);
                         $a = Archivo::find($archivoPrueba->id);
-                        $a->nombre= $encuesta['nombreArchivo'];
+                        $a->nombre = $encuesta['nombreArchivo'];
+                        $a->cantidad_encuestados = $encuesta['poblacion'];
                         $a->save();
 
                         foreach ($resultado as $r) {
                             foreach ($r['respuesta'] as $respuesta) {
-                                $archivo_pregunta=$a->archivoPreguntas->where('pregunta_id',$r['id'])->where('respuesta',$respuesta['valor'])->first();
-                                $archivo_pregunta->cantidad=$respuesta['cantidad'];
-                                $archivo_pregunta->porcentaje=($respuesta['cantidad']>0)?round((($respuesta['cantidad']*100)/$r['muestra']),2):0;
+                                $archivo_pregunta = $a->archivoPreguntas->where('pregunta_id', $r['id'])->where('respuesta', $respuesta['valor'])->first();
+                                $archivo_pregunta->cantidad = $respuesta['cantidad'];
+                                $archivo_pregunta->porcentaje = ($respuesta['cantidad'] > 0) ? round((($respuesta['cantidad'] * 100) / $r['muestra']), 2) : 0;
                                 $archivo_pregunta->save();
                             }
                         }
+                        // return redirect()->route('mostrar.archivo.procesado', ['id' => $a->id]);
                         return response()->json(['data' => $a, 'succes' => true]);
                     }
                 } else {

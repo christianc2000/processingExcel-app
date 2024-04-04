@@ -40,8 +40,10 @@
             <div class="row">
                 <div class="row">
                     <div class="col-md-6 m-1">
-                        <input class="form-group" type="file" @change="handleFileChange" id="documento_analisis"
-                            name="documento">
+                        <input @change="handleFileChange" id="documento_analisis" name="documento" type="file"
+                            accept=".xls, .xlsx">
+                        <div v-if="!isValidFile" class="error-message">Por favor, selecciona un archivo Excel válido.
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 m-1">
@@ -67,11 +69,17 @@
     /* Cambia el color de fondo para campos de solo lectura */
     /* Agrega otros estilos según tus preferencias */
 }
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
 </style>
 <script>
 export default {
     data() {
         return {
+            isValidFile: true,
             keyword: null,
             Carreras: [],
             idSeleccionado: "",
@@ -88,6 +96,27 @@ export default {
         }
     },
     methods: {
+        handleFileChange(e) {
+            const file = e.target.files[0];
+            const allowedExtensions = ['xls', 'xlsx'];
+            this.isValidFile = true;
+            if (file) {
+                const extension = file.name.split('.').pop().toLowerCase();
+                console.log("formato del archivo: ",extension);
+                if (!allowedExtensions.includes(extension)) {
+                    console.log("No es un excel valido desde el handleFileChange")
+                    this.isValidFile = false;
+                    return;
+                }
+                const selectedFile = e.target.files[0];
+                this.documentoSeleccionado = selectedFile;
+                this.isValidFile = true;
+                // Haz lo que necesites con el archivo (por ejemplo, mostrar su nombre)
+                console.log('Archivo seleccionado:', selectedFile.name);
+                // Continuar con el procesamiento del archivo
+                // ...
+            }
+        },
         getResults() {
             axios.get('/livesearch', { params: { keyword: this.keyword } })
                 .then(res => this.Carreras = res.data)
@@ -103,14 +132,14 @@ export default {
             this.Carreras = 0;
             this.data = { id: this.idSeleccionado, carrera: this.carreraSeleccionada, facultad: this.facultadSeleccionada, localidad: this.localidadSeleccionada };
         },
-        handleFileChange(event) {
-            //CUANDO CAMBIA DE DOCUMENTO
-            // Accede al archivo seleccionado
-            const selectedFile = event.target.files[0];
-            this.documentoSeleccionado = selectedFile;
-            // Haz lo que necesites con el archivo (por ejemplo, mostrar su nombre)
-            console.log('Archivo seleccionado:', selectedFile.name);
-        },
+        // handleFileChange(event) {
+        //     //CUANDO CAMBIA DE DOCUMENTO
+        //     // Accede al archivo seleccionado
+        //     const selectedFile = event.target.files[0];
+        //     this.documentoSeleccionado = selectedFile;
+        //     // Haz lo que necesites con el archivo (por ejemplo, mostrar su nombre)
+        //     console.log('Archivo seleccionado:', selectedFile.name);
+        // },
         sendDatos() {
             if (this.carreraSeleccionada && this.facultadSeleccionada && this.localidadSeleccionada) {
                 // Verifica si se ha seleccionado un archivo
@@ -123,9 +152,9 @@ export default {
                     // Realiza la solicitud POST con el formData
                     axios.post('/importar/procesar/archivo', formData)
                         .then(response => {
-                           // const id = response.data.id;
-                            console.log(response.data);
-                            //window.location.href = "http://127.0.0.1:8000/importar/" + id;
+                            const id = response.data.data.id;
+                            console.log(response.data.data);
+                            window.location.href = "http://127.0.0.1:8000/view/archivo/procesado/" + id;
                         })
                         .catch(error => {
                             console.error('Error al enviar datos y archivo:', error);

@@ -16,13 +16,17 @@ class Pregunta extends Model
         'fuente_id'
     ];
 
-    public function dimension(){
+    public function dimension()
+    {
         return $this->belongsTo(Dimension::class);
     }
-    public function archivoPreguntas(){
+    public function archivoPreguntas()
+    {
         return $this->hasMany(ArchivoPregunta::class);
     }
-    public function fuentes(){
+
+    public function fuentes()
+    {
         return $this->belongsToMany(Fuente::class)->withPivot('estado')->withTimestamps();;
     }
 }

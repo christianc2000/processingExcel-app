@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('archivos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->unsignedInteger('cantidad_encuestados');
             $table->foreignId('fuente_id')->references('id')->on('fuentes')->onDelete('cascade');
             $table->foreignId('carrera_facultad_id')->references('id')->on('carreras_facultad')->onDelete('cascade');
             $table->timestamps();
