@@ -30,14 +30,14 @@
         text-transform: uppercase;
     }
 </style>
-<table style="width: 840px">
+<table style="width: 100%">
     <thead>
         <tr>
-            <th scope="col" style="width: 10px; background-color: #ccc; font-weight: bold;">Columna 1</th>
-            <th scope="col" style="width: 10px;background-color: #ccc; font-weight: bold;">Columna 2</th>
+            <th scope="col" style="width: 50px; background-color: #ccc; font-weight: bold;">Columna 1</th>
+            <th scope="col" style="width: 50px;background-color: #ccc; font-weight: bold;">Columna 2</th>
             <th scope="col" style="width: 800px;background-color: #ccc; font-weight: bold;">Columna 3</th>
-            <th scope="col" style="width: 10px;background-color: #ccc; font-weight: bold;">Columna 4</th>
-            <th scope="col" style="width: 10px;background-color: #ccc; font-weight: bold;">Columna 5</th>
+            <th scope="col" style="width: 50px;background-color: #ccc; font-weight: bold;">Columna 4</th>
+            <th scope="col" style="width: 50px;background-color: #ccc; font-weight: bold;">Columna 5</th>
         </tr>
     </thead>
     <tbody>
