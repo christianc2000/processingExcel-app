@@ -33,11 +33,11 @@
 <table style="width: 120px">
     <thead>
         <tr>
-            <th scope="col" style="width: 60px; ">Columna 1</th>
-            <th scope="col" style="width: 60px;">Columna 2</th>
-            <th scope="col" style="width: 380px;">Columna 3</th>
-            <th scope="col" style="width: 60px;">Columna 4</th>
-            <th scope="col" style="width: 60px;">Columna 5</th>
+            <th scope="col" style="width: 60px; "></th>
+            <th scope="col" style="width: 60px;"></th>
+            <th scope="col" style="width: 380px;"></th>
+            <th scope="col" style="width: 60px;"></th>
+            <th scope="col" style="width: 60px;"></th>
         </tr>
     </thead>
     <tbody>
