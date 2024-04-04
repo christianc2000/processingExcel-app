@@ -340,7 +340,7 @@ class ImportarArchivoController extends Controller
                                 //    if ($i == 29) {
 
                                 for ($k = 1; $k <= $encuestados; $k++) {
-                                    $respuestaPregunta = trim($transposedData[$i][$k]); //EXTRAE LA RESPUESTA DEL ARRAY DEL EXCEL TRANSPUESTO  
+                                    $respuestaPregunta = trim($transposedData[$i][$k]); //EXTRAE LA RESPUESTA DEL ARRAY DEL EXCEL TRANSPUESTO
 
                                     // Eliminar todos los espacios de $respuestaPregunta
                                     $respuestaPregunta = strtoupper(str_replace(' ', '', $respuestaPregunta));
@@ -392,7 +392,7 @@ class ImportarArchivoController extends Controller
                                         // if($i==44){
                                         //     return $respuestaColeccion;
                                         // }
-                                        //EXTRAE LA RESPUESTA DEL ARRAY DEL EXCEL TRANSPUESTO  
+                                        //EXTRAE LA RESPUESTA DEL ARRAY DEL EXCEL TRANSPUESTO
 
                                         $respuestaPregunta = strtoupper(str_replace(' ', '', $respuestaPregunta));
                                         $respuestaPregunta = \explode(",", $respuestaPregunta);
@@ -741,16 +741,31 @@ class ImportarArchivoController extends Controller
         return view('procesamiento.preguntas', compact('fuente'));
     }
 
-    public function pdf(Request $request)
+    public function pdf($id)
     {
-        $encuesta = $this->procesarDatos($request);
+        /*$encuesta = $this->procesarDatos($request);*/
+
+        $archivo = Archivo::find($id);
+        $dimensiones = Dimension::all();
+        $fechaActual = Carbon::now()->format('d/m/Y');
+        $horaActual = Carbon::now()->format('H:i:s');
+        /*
+        if (isset($archivo)) {
+            return view('procesamiento.plantilla', compact('archivo', 'dimensiones', 'fechaActual', 'horaActual'));
+            // return view('procesamiento.plantillaexcelexport',compact('archivo','dimensiones','fechaActual','horaActual'));
+        } else {
+            return "No existe el archivo";
+        }*/
 
         //dd($encuesta);
 
         $pdf = Pdf::loadView(
             'procesamiento.pdf',
             [
-                'encuesta'          => $encuesta
+                'archivo'           => $archivo,
+                'dimensiones'       => $dimensiones,
+                'fechaActual'       => $fechaActual,
+                'horaActual'        => $horaActual
             ]
         );
 
