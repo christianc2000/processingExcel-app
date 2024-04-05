@@ -19,15 +19,16 @@ class CarreraFacultadController extends Controller
     {
         if($request->keyword != ""){
             //$data = Carrera::where('nombre', 'LIKE','%'.$request->keyword.'%')->get();
-
+            $frase=strtoupper(str_replace(' ', '', $request->keyword));
+            
             $data = DB::table('carreras_facultad')
                         ->join('facultades', 'carreras_facultad.facultad_id', '=', 'facultades.id')
                         ->join('carreras', 'carreras_facultad.carrera_id', '=', 'carreras.id')
                         ->join('localidades', 'facultades.localidad_id', '=', 'localidades.id')
                         ->select('carreras_facultad.id as id','facultades.nombre as facultad', 'carreras.nombre as carrera', 'localidades.nombre as localidad')
-                        ->where('carreras.nombre', 'LIKE','%'.$request->keyword.'%')
-                        ->orWhere('localidades.nombre', 'LIKE','%'.$request->keyword.'%')
-                        ->orWhere('facultades.nombre', 'LIKE','%'.$request->keyword.'%')
+                        ->where('carreras.nombre_mayuscula', 'LIKE','%'.$request->keyword.'%')
+                        ->orWhere('localidades.nombre_mayuscula', 'LIKE','%'.$request->keyword.'%')
+                        ->orWhere('facultades.nombre_mayuscula', 'LIKE','%'.$request->keyword.'%')
                         ->get();
 
             return response()->json($data);

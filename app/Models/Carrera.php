@@ -12,7 +12,8 @@ class Carrera extends Model
 
     public $table = "carreras";
     protected $fillable = [
-        'nombre'
+        'nombre',
+        'nombre_mayuscula'
     ];
     public function carrerasFacultades()
     {

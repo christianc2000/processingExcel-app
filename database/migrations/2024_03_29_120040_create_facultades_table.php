@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('facultades', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->string('nombre_mayuscula')->nullable();
             $table->foreignId('localidad_id')->references('id')->on('localidades')->onDelete('cascade');
             $table->timestamps();
         });

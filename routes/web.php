@@ -28,12 +28,13 @@ Route::post('importar/archivo',[ImportarArchivoController::class,'importar'])->n
 Route::post('importar/procesar/archivo',[ImportarArchivoController::class,'procesarArchivo'])->name('importar.archivo.procesar');
 
 Route::get('view/archivo/procesado/{id}',[ImportarArchivoController::class,'mostrarArchivoProcesado'])->name('mostrar.archivo.procesado');
-Route::get('exportar-excel/{id}', [ImportarArchivoController::class,'exportarExcel'])->name('exportar.excel');//Exportar el excel
+// Route::get('exportar-excel/{id}', [ImportarArchivoController::class,'exportarExcel'])->name('exportar.excel');//Exportar el excel
+Route::post('exportar-excel', [ImportarArchivoController::class,'exportarExcel'])->name('exportar.excel');//Exportar el excel
 Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/', [App\Http\Controllers\CarreraFacultadController::class, 'index'])->name('procesamiento');
+Route::get('/', [App\Http\Controllers\CarreraFacultadController::class, 'index'])->name('inicio');
 Route::post('/procesamiento', [App\Http\Controllers\CarreraFacultadController::class, 'index'])->name('procesamiento');
 
 Route::get('/livesearch', [App\Http\Controllers\CarreraFacultadController::class, 'getCarreras']);

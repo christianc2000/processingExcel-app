@@ -92,7 +92,11 @@ export default {
     },
     watch: {
         keyword(after, before) {
-            this.getResults();
+            var modifiedKeyword = this.keyword;
+            modifiedKeyword=modifiedKeyword.replace(/\s+/g, '').toUpperCase();
+            // Llamar al método getResults() con la palabra clave modificada
+            this.getResults(modifiedKeyword);
+            // this.getResults();
         }
     },
     methods: {
@@ -117,11 +121,11 @@ export default {
                 // ...
             }
         },
-        getResults() {
-            axios.get('/livesearch', { params: { keyword: this.keyword } })
-                .then(res => this.Carreras = res.data)
-                .catch(error => { });
-        },
+        getResults(keyword) {
+        axios.get('/livesearch', { params: { keyword } })
+            .then(res => this.Carreras = res.data)
+            .catch(error => { });
+    },
 
         getElemento(id, carrera, facultad, localidad) {
             console.log("El ID es " + id);

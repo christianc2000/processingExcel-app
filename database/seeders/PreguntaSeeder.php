@@ -204,7 +204,7 @@ class PreguntaSeeder extends Seeder
             'enunciado' => '22.1  En caso que la respuesta sea SI, NO ¿Cómo son estos procedimientos? (A.D.)',
             'tipo' => 'U,C',
             // 'fuente'=>'A,D',
-            'respuesta' => 'EFICIENTES|BUROCRÁTICOS',
+            'respuesta' => 'EFICIENTES|BUROCRATICOS',
             'dimension_id' => 1,
         ]);
         $pregunta->fuentes()->attach([1,2],['estado'=>true]);
@@ -460,7 +460,7 @@ class PreguntaSeeder extends Seeder
             'enunciado' => '51.1 Qué opina Usted respecto a la CANTIDAD, de las dotaciones de equipamiento (los espacios donde se realizan prácticas (laboratorios, anfiteatros, clínicas, gabinetes, etc.)) de la carrera (A.D.E.)',
             'tipo' => 'U',
             // 'fuente'=>'A,D,E',
-            'respuesta' => 'SUFICIENTES|INSUFICIENTES|ENEXISTENTES',
+            'respuesta' => 'SUFICIENTES|INSUFICIENTES|INEXISTENTES',
             'dimension_id' => 2,
         ]);
         $pregunta->fuentes()->attach([1,2,4],['estado'=>true]);
@@ -476,7 +476,7 @@ class PreguntaSeeder extends Seeder
             'enunciado' => '51.3 Qué opina Usted respecto a la CANTIDAD, de las dotaciones de equipamiento ( Equipos de computación existentes  ) (A.D.E.) ',
             'tipo' => 'U',
             // 'fuente'=>'A,D,E',
-            'respuesta' => 'SUFICIENTES|INSUFICIENTES|ENEXISTENTES',
+            'respuesta' => 'SUFICIENTES|INSUFICIENTES|INEXISTENTES',
             'dimension_id' => 2,
         ]);
         $pregunta->fuentes()->attach([1,2,4],['estado'=>true]);
@@ -516,7 +516,7 @@ class PreguntaSeeder extends Seeder
             'enunciado' => '54.1 En caso que la respuesta sea SI, estas políticas: (A.D.E.)',
             'tipo' => 'U,C',
             // 'fuente'=>'A,D,E',
-            'respuesta' => 'SE APLICAN|SE APLICAN PARCIALMENTE|NO SE APLICAN',
+            'respuesta' => 'SE APLICAN|SE APLICAN PARCILAMENTE|NO SE APLICAN',
             'dimension_id' => 2,
         ]);
         $pregunta->fuentes()->attach([1,2,4],['estado'=>true]);
@@ -844,7 +844,7 @@ class PreguntaSeeder extends Seeder
             'enunciado' => '89.1 En caso que la respuesta sea SI , Como: (A.D.E.)',
             'tipo' => 'U,C',
             // 'fuente'=>'A,D,E',
-            'respuesta' => 'ASESORÍAS|TUTORÍAS|APOYO ACADÉMICO',
+            'respuesta' => 'ASESORIAS|TUTORIAS|APOYO ACADEMICO',
             'dimension_id' => 3,
         ]);
         $pregunta->fuentes()->attach([1,2,4],['estado'=>true]);
@@ -1124,7 +1124,7 @@ class PreguntaSeeder extends Seeder
             'enunciado' => '115.1 La sala de cómputo de la facultad y/o carrera, cuenta con  CANTIDAD de Equipos de Computación:    : (A.D.E.)',
             'tipo' => 'U',
             // 'fuente'=>'A,D,E',
-            'respuesta' => 'SUFICIENTES|INSUFICIENTES|ENEXISTENTES',
+            'respuesta' => 'SUFICIENTES|INSUFICIENTES|INEXISTENTES',
             'dimension_id' => 4,
         ]);
         $pregunta->fuentes()->attach([1,2,4],['estado'=>true]);
@@ -1148,7 +1148,7 @@ class PreguntaSeeder extends Seeder
             'enunciado' => '116.1 ¿Qué opina Usted respecto a las dotaciones de equipamiento de la carrera en cuanto a  CANTIDAD de equipamiento de los laboratorios existentes    :  (A.D.E.)',
             'tipo' => 'U',
             // 'fuente'=>'A,D,E',
-            'respuesta' => 'SUFICIENTES|INSUFICIENTES|ENEXISTENTES',
+            'respuesta' => 'SUFICIENTES|INSUFICIENTES|INEXISTENTES',
             'dimension_id' => 4,
         ]);
         $pregunta->fuentes()->attach([1,2,4],['estado'=>true]);
@@ -1164,7 +1164,7 @@ class PreguntaSeeder extends Seeder
             'enunciado' => '116.3   ¿Qué opina Usted respecto a la CANTIDAD de las dotaciones de equipos de computación existentes en la Carrera    :  (A.D.E.)',
             'tipo' => 'U',
             // 'fuente'=>'A,D,E',
-            'respuesta' => 'SUFICIENTES|INSUFICIENTES|ENEXISTENTES',
+            'respuesta' => 'SUFICIENTES|INSUFICIENTES|INEXISTENTES',
             'dimension_id' => 4,
         ]);
         $pregunta->fuentes()->attach([1,2,4],['estado'=>true]);

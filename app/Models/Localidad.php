@@ -11,7 +11,8 @@ class Localidad extends Model
 
     public $table = "localidades";
     protected $fillable=[
-        'nombre'
+        'nombre',
+        'nombre_mayuscula'
     ];
     public function facultades(){
         return $this->hasMany(Facultad::class);

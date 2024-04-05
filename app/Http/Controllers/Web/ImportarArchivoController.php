@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Exports\EncuestaExport;
+use App\Exports\EncuestaExportSinDB;
 use App\Http\Controllers\Controller;
 use App\Models\Archivo;
 use App\Models\ArchivoPregunta;
@@ -104,22 +105,47 @@ class ImportarArchivoController extends Controller
         $fechaActual = Carbon::now()->format('d/m/Y');
         $horaActual = Carbon::now()->format('H:i:s');
         if (isset($archivo)) {
-             return view('procesamiento.plantilla', compact('archivo', 'dimensiones', 'fechaActual', 'horaActual'));
+            return view('procesamiento.plantilla', compact('archivo', 'dimensiones', 'fechaActual', 'horaActual'));
             //return view('procesamiento.plantillaexcelexport',compact('archivo','dimensiones','fechaActual','horaActual'));
         } else {
             return "No existe el archivo";
         }
     }
-    public function exportarExcel($id)
-    {
-        $archivo = Archivo::find($id);
-        $dimensiones = Dimension::all();
-        $fechaActual = Carbon::now()->format('d/m/Y');
-        $fechaSinBarras = str_replace('/', '', $fechaActual);
+    // public function exportarExcel($id)
+    // {
+        // $archivo = Archivo::find($id);
+        // $dimensiones = Dimension::all();
+        // $fechaActual = Carbon::now()->format('d/m/Y');
+        // $fechaSinBarras = str_replace('/', '', $fechaActual);
 
-        $horaActual = Carbon::now()->format('H:i:s');
-        if (isset($archivo)) {
-            return Excel::download(new EncuestaExport($archivo,$dimensiones,$fechaActual,$horaActual), 'archivo_salida_'.$archivo->fuente->nombre.'_'.$fechaSinBarras.'.xlsx');
+        // $horaActual = Carbon::now()->format('H:i:s');
+        // if (isset($archivo)) {
+        //     return Excel::download(new EncuestaExport($archivo, $dimensiones, $fechaActual, $horaActual), 'archivo_salida_' . $archivo->fuente->nombre . '_' . $fechaSinBarras . '.xlsx');
+        //     // return view('procesamiento.plantilla', compact('archivo','dimensiones','fechaActual','horaActual'));
+        //     // return view('procesamiento.plantillaexcelexport', compact('archivo', 'dimensiones', 'fechaActual', 'horaActual'));
+        // } else {
+        //     return "No existe el archivo";
+        // }
+    // }
+    public function exportarExcel(Request $request)
+    {
+        
+        $encuesta=json_decode($request->encuesta);
+      
+    //    return $encuesta;
+        // $archivo = Archivo::find($id);
+        $dimensiones = Dimension::all();
+        // $fechaActual = Carbon::now()->format('d/m/Y');
+        $fechaSinBarras = str_replace('/', '', $encuesta->fechaActual);
+// return $fechaSinBarras;
+        // $horaActual = Carbon::now()->format('H:i:s');
+        if (isset($encuesta)) {
+            $archivo = 'archivo_salida_' . $encuesta->nombreArchivo . '_' . str_replace('/', '', $encuesta->fechaActual) . '.xlsx';
+            return Excel::download(new EncuestaExportSinDB($encuesta, $dimensiones), $archivo);
+          //  return response()->json(['archivo' => $archivo]);
+        //   return "se descarga";
+            // return 'entra a descargar';
+            // return Excel::download(new EncuestaExportSinDB($encuesta,$dimensiones), 'archivo_salida_' . $encuesta->nombreArchivo . '_' . $fechaSinBarras . '.xlsx');
             // return view('procesamiento.plantilla', compact('archivo','dimensiones','fechaActual','horaActual'));
             // return view('procesamiento.plantillaexcelexport', compact('archivo', 'dimensiones', 'fechaActual', 'horaActual'));
         } else {
@@ -129,6 +155,7 @@ class ImportarArchivoController extends Controller
     //**************************METODO PARA PROCESAR */
     public function procesarArchivo(Request $request)
     {
+
         function extraerTexto($nombreArchivo)
         {
             // Obtén el nombre del archivo sin la extensión
@@ -273,6 +300,7 @@ class ImportarArchivoController extends Controller
             return $c - 1;
         }
         // return $request->carrera_facultad_id;
+
         if ($request->hasFile('documento')) {
             $file = $request->file('documento');
             //EXTRAEMOS EL NOMBRE DEL ARCHIVO
@@ -281,7 +309,6 @@ class ImportarArchivoController extends Controller
 
             // $categorias = ["AUTORIDADES", "DOCENTES", "EMPLEADORES", "ESTUDIANTES", "TITULADOS"];
             $fuente = Fuente::all()->where('nombre', strtoupper($nombreArchivo))->first();
-
             // return $fuente;
             if (isset($fuente)) {
                 $datos = Excel::toArray([], $file);
@@ -296,9 +323,14 @@ class ImportarArchivoController extends Controller
                     // return $preguntasFuente[0];
                     //  return $encuestados;
                     $encuesta = [
+                        'localidad' => $request->localidad,
+                        'facultad' => $request->facultad,
+                        'carrera' => $request->carrera,
+                        'fuente' => $fuente->nombre,
+                        'fechaActual'=> Carbon::now()->format('d/m/Y'),
+                        'horaActual' => Carbon::now()->format('H:i:s'),
                         'poblacion' => $encuestados,
                         'preguntas' => (count($transposedData) - 1),
-                        'fuente' => $fuente->id,
                         'nombreArchivo' => $nombreArchivo1,
                         'resultado' => null
                     ];
@@ -415,6 +447,7 @@ class ImportarArchivoController extends Controller
                         $resultado->push([
                             'id' => $id_pregunta,
                             'pregunta' => $pregunta,
+                            'dimension' => $preguntasFuente[$i - 1]['dimension_id'],
                             'tipo' => $tipo,
                             'muestra' => $muestra,
                             'respuesta' => $respuestaColeccion
@@ -423,60 +456,66 @@ class ImportarArchivoController extends Controller
 
                     }
                     $encuesta['resultado'] = $resultado;
+                    $dimensiones=Dimension::all();
                     // return response()->json(['data' => $encuesta, 'succes' => true]);
-                    $archivoPrueba = Archivo::all()->where('fuente_id', $encuesta['fuente'])->where('carrera_facultad_id', $request->carrera_facultad_id)->first();
+                    //return $encuesta;
+                    return view('procesamiento.plantilla-sin-bd',compact('encuesta','dimensiones'));
+                    // $archivoPrueba = Archivo::all()->where('fuente_id', $encuesta['fuente'])->where('carrera_facultad_id', $request->carrera_facultad_id)->first();
 
-                    if ($archivoPrueba == null) {
-                        // return response()->json(['data' => $encuesta, 'succes' => true]);
-                        $a = Archivo::create([
-                            'nombre' => $encuesta['nombreArchivo'],
-                            'cantidad_encuestados' => $encuesta['poblacion'],
-                            'fuente_id' => $encuesta['fuente'],
-                            'carrera_facultad_id' => $request['carrera_facultad_id'],
-                        ]);
-                        foreach ($resultado as $r) {
-                            foreach ($r['respuesta'] as $respuesta) {
-                                ArchivoPregunta::create([
-                                    'respuesta' => $respuesta['valor'],
-                                    'muestra' => $r['muestra'],
-                                    'porcentaje' => ($respuesta['cantidad'] > 0) ? round((($respuesta['cantidad'] * 100) / $r['muestra']), 2) : 0,
-                                    'cantidad' => ($respuesta['cantidad'] == null) ? 0 : $respuesta['cantidad'],
-                                    'archivo_id' => $a->id,
-                                    'pregunta_id' => $r['id']
-                                ]);
-                            }
-                        }
-                        // return redirect()->route('mostrar.archivo.procesado', ['id' => $a->id]);
-                        return response()->json(['data' => $a, 'succes' => true]);
-                    } else {
-                        // return response()->json(['data' => $encuesta, 'succes' => true]);
-                        $a = Archivo::find($archivoPrueba->id);
-                        $a->nombre = $encuesta['nombreArchivo'];
-                        $a->cantidad_encuestados = $encuesta['poblacion'];
-                        $a->save();
+                    // if ($archivoPrueba == null) {
+                    //     // return response()->json(['data' => $encuesta, 'succes' => true]);
+                    //     $a = Archivo::create([
+                    //         'nombre' => $encuesta['nombreArchivo'],
+                    //         'cantidad_encuestados' => $encuesta['poblacion'],
+                    //         'fuente_id' => $encuesta['fuente'],
+                    //         'carrera_facultad_id' => $request['carrera_facultad_id'],
+                    //     ]);
+                    //     foreach ($resultado as $r) {
+                    //         foreach ($r['respuesta'] as $respuesta) {
+                    //             ArchivoPregunta::create([
+                    //                 'respuesta' => $respuesta['valor'],
+                    //                 'muestra' => $r['muestra'],
+                    //                 'porcentaje' => ($respuesta['cantidad'] > 0) ? round((($respuesta['cantidad'] * 100) / $r['muestra']), 2) : 0,
+                    //                 'cantidad' => ($respuesta['cantidad'] == null) ? 0 : $respuesta['cantidad'],
+                    //                 'archivo_id' => $a->id,
+                    //                 'pregunta_id' => $r['id']
+                    //             ]);
+                    //         }
+                    //     }
+                    //     // return redirect()->route('mostrar.archivo.procesado', ['id' => $a->id]);
+                    //     return response()->json(['data' => $a, 'succes' => true]);
+                    // } else {
+                    //     // return response()->json(['data' => $encuesta, 'succes' => true]);
+                    //     $a = Archivo::find($archivoPrueba->id);
+                    //     $a->nombre = $encuesta['nombreArchivo'];
+                    //     $a->cantidad_encuestados = $encuesta['poblacion'];
+                    //     $a->save();
 
-                        foreach ($resultado as $r) {
-                            foreach ($r['respuesta'] as $respuesta) {
-                                $archivo_pregunta = $a->archivoPreguntas->where('pregunta_id', $r['id'])->where('respuesta', $respuesta['valor'])->first();
-                                $archivo_pregunta->cantidad = $respuesta['cantidad'];
-                                $archivo_pregunta->porcentaje = ($respuesta['cantidad'] > 0) ? round((($respuesta['cantidad'] * 100) / $r['muestra']), 2) : 0;
-                                $archivo_pregunta->save();
-                            }
-                        }
-                        // return redirect()->route('mostrar.archivo.procesado', ['id' => $a->id]);
-                        return response()->json(['data' => $a, 'succes' => true]);
-                    }
+                    //     foreach ($resultado as $r) {
+                    //         foreach ($r['respuesta'] as $respuesta) {
+                    //             $archivo_pregunta = $a->archivoPreguntas->where('pregunta_id', $r['id'])->where('respuesta', $respuesta['valor'])->first();
+                    //             $archivo_pregunta->cantidad = $respuesta['cantidad'];
+                    //             $archivo_pregunta->porcentaje = ($respuesta['cantidad'] > 0) ? round((($respuesta['cantidad'] * 100) / $r['muestra']), 2) : 0;
+                    //             $archivo_pregunta->save();
+                    //         }
+                    //     }
+                    //     // return redirect()->route('mostrar.archivo.procesado', ['id' => $a->id]);
+                    //     return response()->json(['data' => $a, 'succes' => true]);
+                    // }
                 } else {
                     // echo "los datos están vacios";
-                    return response()->json(['error' => ['message' => 'Error: los datos están vacios']], 422);
+                    return redirect()->route('inicio')->with('error', 'Error no se puede procesar porque sus datos están vacíos');
+                    // return response()->json(['error' => ['message' => 'Error: los datos están vacios']], 422);
                 }
             } else {
                 // return "archivo con nombre incorrecto";
-                return response()->json(['error' => ['message' => 'Error: archivo con nombre incorrecto']], 422);
+                return redirect()->route('inicio')->with('error', 'Error no se puede procesar porque el nombre del archivo no cumple con el formato establecido');
+                // return response()->json(['error' => ['message' => 'Error: archivo con nombre incorrecto']], 422);
             }
         } else {
             // return "no hay archivo";
-            return response()->json(['error' => ['message' => 'Error: Archivo no encontrado']], 404);
+            return redirect()->route('inicio')->with('error', 'Error no tiene archivo');
+            // return response()->json(['error' => ['message' => 'Error: Archivo no encontrado']], 404);
         }
     }
     public function importar(Request $request)

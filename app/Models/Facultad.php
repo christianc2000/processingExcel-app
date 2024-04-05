@@ -13,6 +13,7 @@ class Facultad extends Model
     public $table = "facultades";
     protected $fillable = [
         'nombre',
+        'nombre_mayuscula',
         'localidad_id'
     ];
 
