@@ -9,7 +9,6 @@ export default defineConfig({
             input: [
                 'resources/js/app.js',
             ],
-            publicDir: 'public/build', // Ruta al directorio público de Laravel donde se colocarán los activos compilados
             refresh: true,
         }),
         vue({
@@ -27,5 +26,4 @@ export default defineConfig({
             vue: 'vue/dist/vue.esm-bundler.js',
         }
     },
-    base: 'https://processingexcel-app-production.up.railway.app/', // URL base con HTTPS
 });

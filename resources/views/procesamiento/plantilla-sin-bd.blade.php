@@ -13,8 +13,6 @@
          <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet"> --}}
 
     <!-- Scripts -->
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-    <script src="{{ asset('build/app.js') }}"></script>
 
     {{-- @vite(['resources/js/app.js']) --}}
     <title>Vista Previa {{ $encuesta['nombreArchivo'] }}</title>
@@ -89,9 +87,9 @@
                 <p class="encabezado derecha">{{ $encuesta['fechaActual'] }}</p>
                 <p class="encabezado derecha">{{ $encuesta['horaActual'] }}</p>
                 <div class="encabezado derecha">
-                    <form action="{{ route('exportar.excel') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="hidden" name="encuesta" value="{{ json_encode($encuesta) }}">
+                    <form action="{{route('exportar.excel')}}" method="POST" enctype="multipart/form-data">
+                     @csrf
+                        <input type="hidden" name="encuesta" value="{{json_encode($encuesta)}}">
                         <button class="btn btn-success btn-sm" id="btn-excel" type="submit">Excel</button>
                     </form>
                     {{-- <button class="btn btn-success btn-sm" id="btn-excel">Excel</button> --}}

@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Inicio</title>
-    {{-- @vite(['resources/js/app.js']) --}}
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-    <script src="{{ asset('build/app.js') }}"></script>
-
+    @vite(['resources/js/app.js'])
 </head>
 
 <body class="p-2">
@@ -263,7 +260,7 @@
             } else {
                 $('#error-documento').text('');
             }
-            // Muestra el spinner al enviar el formulario
+             // Muestra el spinner al enviar el formulario
         });
     </script>
 </body>
