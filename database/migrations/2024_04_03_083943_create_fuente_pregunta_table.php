@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('fuente_pregunta', function (Blueprint $table) {
             $table->id();
-            $table->boolean('estado')->default('true');
+            // $table->boolean('estado')->default('true');
             $table->foreignId('fuente_id')->references('id')->on('fuentes');
             $table->foreignId('pregunta_id')->references('id')->on('preguntas');
             $table->timestamps();

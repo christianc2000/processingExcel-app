@@ -27,6 +27,6 @@ class Pregunta extends Model
 
     public function fuentes()
     {
-        return $this->belongsToMany(Fuente::class)->withPivot('estado')->withTimestamps();;
+        return $this->belongsToMany(Fuente::class)->withTimestamps();;
     }
 }
