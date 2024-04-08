@@ -37,7 +37,7 @@ class CarreraFacultadController extends Controller
 
     public function mostrarDatosCarrera(Request $request){
 
-        //Aqui se debería procesar y guardar el archivo, junto con su nombre para luego ver esos resultados
+        //1Aqui se debería procesar y guardar el archivo, junto con su nombre para luego ver esos resultados
 
         $archivo = new Archivo();
 

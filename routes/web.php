@@ -39,8 +39,8 @@ Route::post('/procesamiento', [App\Http\Controllers\CarreraFacultadController::c
 
 Route::get('/livesearch', [App\Http\Controllers\CarreraFacultadController::class, 'getCarreras']);
 
-Route::post('/datos', [App\Http\Controllers\CarreraFacultadController::class, 'mostrarDatosCarrera'])->name('datos');
-Route::get('/datos', [App\Http\Controllers\CarreraFacultadController::class, 'mostrarDatosCarrera'])->name('datos');
+// Route::post('/datos', [App\Http\Controllers\CarreraFacultadController::class, 'mostrarDatosCarrera'])->name('datos');
+// Route::get('/datos', [App\Http\Controllers\CarreraFacultadController::class, 'mostrarDatosCarrera'])->name('datos');
 Route::get('/resultados/{id}', [App\Http\Controllers\CarreraFacultadController::class, 'resultados'])->name('resultados');
 
 Route::get('/procesamiento/pdf/{id}', [App\Http\Controllers\Web\ImportarArchivoController::class, 'pdf'])->name('pdf');
