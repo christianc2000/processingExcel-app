@@ -9,7 +9,7 @@ export default defineConfig({
             input: [
                 'resources/js/app.js',
             ],
-            publicDir: 'public', // Ruta al directorio público de Laravel donde se colocarán los activos compilados
+            publicDir: 'public/build', // Ruta al directorio público de Laravel donde se colocarán los activos compilados
             refresh: true,
         }),
         vue({
